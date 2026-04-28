@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Control de Permisos</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <div class="logo-box">CP</div>
+      <div>
+        <h1>Control de Permisos</h1>
+        <p>Consulta, vigencias y trazabilidad documental por trabajador</p>
+      </div>
+    </div>
+    <div style="display:flex; gap:10px; align-items:center;">
+    <button id="btnCarpeta" class="secondary">
+      📁 Carpeta
+    </button>
+
+    <div class="status-pill" id="connectionStatus">
+      Modo local
+    </div>
+  </div>
+  </header>
+
+  <main class="layout">
+    <nav class="tabs">
+      <button class="tab active" data-tab="consulta">Consulta DNI</button>
+      <button class="tab" data-tab="control">Control operativo</button>
+      <button class="tab" data-tab="impresion">Impresión / documentos</button>
+    </nav>
+
+    <section id="consulta" class="panel active">
+      <div class="card search-card">
+        <div>
+          <h2>Buscar trabajador</h2>
+          <p>Ingresa DNI para revisar información, permisos, vigencias y documentos.</p>
+        </div>
+        <div class="search-row">
+          <input id="dniInput" type="text" placeholder="Ej. 12345678" inputmode="numeric" />
+          <button id="btnBuscar" class="primary">Buscar</button>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Información del trabajador</h3>
+          <div class="info-grid" id="workerInfo"></div>
+        </div>
+        <div class="card summary-card">
+          <h3>Resumen de estado</h3>
+          <div class="summary" id="workerSummary"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">
+          <h3>Permisos y vigencias</h3>
+          <span id="todayLabel"></span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Permiso</th>
+                <th>EMO</th>
+                <th>Vigencia</th>
+                <th>Estado</th>
+                <th>Días</th>
+                <th>Documento</th>
+              </tr>
+            </thead>
+            <tbody id="permTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="control" class="panel">
+      <div class="card">
+        <div class="section-title">
+          <div>
+            <h2>Control operativo</h2>
+            <p>Filtra trabajadores por guardia, área, permiso y estado.</p>
+          </div>
+          <button id="btnActualizar" class="secondary">Actualizar datos</button>
+        </div>
+        <div class="filters">
+          <label>Guardia<select id="filterGuardia"></select></label>
+          <label>Área<select id="filterArea"></select></label>
+          <label>Permiso<select id="filterPermiso"></select></label>
+          <label>Estado<select id="filterEstado"></select></label>
+        </div>
+      </div>
+
+      <div class="cards-row" id="kpiCards"></div>
+
+      <div class="card">
+        <h3>Estado de permisos</h3>
+        <div class="bar-chart" id="barChart"></div>
+      </div>
+
+      <div class="card">
+        <h3>Detalle filtrado</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>DNI</th>
+                <th>Trabajador</th>
+                <th>Guardia</th>
+                <th>Área</th>
+                <th>Permiso</th>
+                <th>Estado</th>
+                <th>Días</th>
+              </tr>
+            </thead>
+            <tbody id="controlTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="impresion" class="panel">
+      <div class="card">
+        <h2>Impresión / documentos</h2>
+        <p>En versión web, los documentos deben estar en Google Drive. La app abrirá el PDF; la impresión se hace desde el visor del navegador.</p>
+        <div class="filters">
+          <label>Buscar DNI<input id="bulkDniFilter" type="text" placeholder="Filtrar DNI" /></label>
+          <label>Documento<select id="bulkDocType"></select></label>
+          <button id="btnOpenSelected" class="primary">Abrir documentos seleccionados</button>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Trabajadores</h3>
+        <div id="bulkList" class="bulk-list"></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast"></div>
+  <script src="script.js"></script>
+</body>
+</html>
