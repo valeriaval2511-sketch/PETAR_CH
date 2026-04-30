@@ -478,7 +478,9 @@ function renderChart(){
   const estados = ["VIGENTE","POR VENCER","NO VIGENTE"];
 
   const counts = estados.map(e =>
-    permisosLong.filter(x => x.estado === e).length
+    permisosLong.filter(x => 
+      (x.estado || "").toUpperCase() === e
+    ).length
   );
 
   const max = Math.max(...counts,1);
