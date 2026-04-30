@@ -21,20 +21,28 @@
       </div>
   
     </div>
-  
+
     <div class="header-right">
+
+    <button id="btnCarpeta" class="btn-folder">
+      📁 Carpeta
+    </button>
   
-      <button id="btnCarpeta" class="secondary">
-        📁 Carpeta
-      </button>
+    <input type="file" id="folderInput" webkitdirectory multiple hidden>
   
-      <input type="file" id="folderInput" webkitdirectory multiple hidden>
+    <div class="status-group">
   
-      <div class="status-pill" id="connectionStatus">
-        Sin conexión
+      <div class="status-pill folder-status" id="folderStatus">
+        Sin carpeta
+      </div>
+  
+      <div class="status-pill db-status" id="connectionStatus">
+        Desconectado
       </div>
   
     </div>
+  
+  </div>
   
   </header>
 
