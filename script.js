@@ -790,6 +790,30 @@ function renderBulkList(){
   });
 
   cont.innerHTML = html;
+
+   document.querySelectorAll("#bulkList input")
+.forEach(ch => {
+  ch.addEventListener("change", updateSelectedCounter);
+});
+
+updateSelectedCounter();
+   
+}
+
+function updateSelectedCounter(){
+
+  const counter =
+    document.getElementById("selectedCounter");
+
+  if(!counter) return;
+
+  const total =
+    document.querySelectorAll(
+      "#bulkList input:checked"
+    ).length;
+
+  counter.textContent =
+    `${total} seleccionados`;
 }
 
 function renderChart(){
@@ -1057,6 +1081,7 @@ function setupEvents(){
       [...checks].every(c => c.checked);
 
     checks.forEach(c => c.checked = !allChecked);
+     updateSelectedCounter();
 
   });
 
