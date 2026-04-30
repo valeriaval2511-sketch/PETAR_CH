@@ -285,10 +285,14 @@ function searchWorker(){
     x => normalizeDni(x.DNI) === dni
   );
 
-  if(!worker){
-    toast("No encontrado.");
-    return;
-  }
+   if(!dni){
+     return;
+   }
+   
+   if(!worker){
+     toast("No encontrado.");
+     return;
+   }
 
   currentWorker = worker;
 
