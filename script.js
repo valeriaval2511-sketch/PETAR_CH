@@ -184,7 +184,7 @@ function loadData(){
       status.textContent = "Conectado a Google Sheets";
       status.style.background = "#1f7a4c"; // opcional verde
 
-      // 🔥 IMPORTANTE: refrescar UI
+      // IMPORTANTE: refrescar UI
       renderControl();
       renderBulkList();
       renderChart();
@@ -293,10 +293,10 @@ function renderWorkerPerms(worker){
       ? statusFromVigencia(vig)
       : {estado:"—",clase:"unknown",diasTexto:"—"};
 
-    // 🔥 AQUÍ VA JS (fuera del HTML)
+    // AQUÍ VA JS (fuera del HTML)
     const existe = existeDocumento(dni, p.key);
 
-    // 🔥 AQUÍ VA SOLO HTML
+    // AQUÍ VA SOLO HTML
     html += `
     <tr>
       <td>${p.label}</td>
@@ -511,7 +511,7 @@ function renderChart(){
   const cont = document.getElementById("barChart");
   if(!cont) return;
 
-  // 🔥 sin filtro de estado
+  // sin filtro de estado
   const fG = document.getElementById("filterGuardia").value;
   const fA = document.getElementById("filterArea").value;
   const fP = document.getElementById("filterPermiso").value;
@@ -539,7 +539,7 @@ function renderChart(){
 
     const val = counts[i];
 
-    // 🔥 mínimo visible
+    // mínimo visible
     const h = Math.max((val / max) * 150, 10);
 
     let color = "#6b7280";
@@ -602,6 +602,29 @@ function openSelectedDocs(){
   toast("Función activa.");
 }
 
+function cargarTiposDocumento(){
+
+  const select = document.getElementById("bulkDocType");
+
+  if(!select || archivosLocal.length === 0) return;
+
+  // obtener carpetas únicas
+  const tipos = new Set();
+
+  archivosLocal.forEach(file => {
+    const partes = file.webkitRelativePath.split("/");
+
+    if(partes.length > 1){
+      tipos.add(partes[1].toUpperCase());
+    }
+  });
+
+  // llenar select
+  select.innerHTML = `<option value="">Seleccionar</option>` +
+    [...tipos].map(t => `<option value="${t}">${t}</option>`).join("");
+
+}
+
 function setupEvents(){
 
   // Buscar DNI
@@ -656,7 +679,7 @@ function setupEvents(){
    document.getElementById("bulkDocType")
    .addEventListener("change", renderBulkList);
 
-  // 🔥 BOTÓN ABRIR DOCUMENTOS (CORRECTO)
+  // BOTÓN ABRIR DOCUMENTOS (CORRECTO)
   document.getElementById("btnOpenSelected")
   .addEventListener("click", () => {
 
@@ -691,6 +714,8 @@ function setupEvents(){
   .addEventListener("change", (e) => {
 
     archivosLocal = Array.from(e.target.files);
+      
+     cargarTiposDocumento();
 
     console.log("Archivos cargados:", archivosLocal);
 
@@ -707,7 +732,7 @@ function setupEvents(){
      checks.forEach(c => c.checked = !allChecked);
    });
 
-   // 🖨️ Imprimir seleccionados
+   // Imprimir seleccionados
    document.getElementById("btnPrintSelected")
    .addEventListener("click", () => {
    
