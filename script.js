@@ -340,7 +340,7 @@ function renderWorkerInfo(w){
   
     <div class="info-item">
       <small>Nombre:</small>
-      <strong>${get(w,COLS.nombre)}</strong>
+      <strong>${fullName(w)}</strong>
     </div>
 
     <div class="info-item">
@@ -385,38 +385,70 @@ function renderWorkerPerms(worker){
 
   const dni = worker.DNI;
   const tbody = document.getElementById("permTable");
+  const docHeader = document.getElementById("docHeader");
 
   let html = "";
 
+  // Mostrar u ocultar columna documento
+  if(docHeader){
+    docHeader.style.display = archivosLocal.length ? "" : "none";
+  }
+
   for(const p of PERMISOS){
 
-    // 🔥 NUEVO: EMO
-    const emo = p.emoCol ? parseDate(get(worker,p.emoCol)) : null;
+    const emo = p.emoCol
+      ? parseDate(get(worker,p.emoCol))
+      : null;
 
-    const vig = parseDate(get(worker,p.vigenciaCol));
+    const vig = p.vigenciaCol
+      ? parseDate(get(worker,p.vigenciaCol))
+      : null;
 
     const st = p.vigenciaCol
       ? statusFromVigencia(vig)
-      : {estado:"—",clase:"unknown",diasTexto:"—"};
+      : {
+          estado:"—",
+          clase:"unknown",
+          diasTexto:"—"
+        };
 
-    const existe = existeDocumento(dni, p.key);
+    const existe = existeDocumento(dni,p.key);
 
     html += `
-    <tr>
-      <td>${p.label}</td>
-      <td>${fmtDate(emo)}</td> <!-- 🔥 EMO -->
-      <td>${fmtDate(vig)}</td>
-      <td><span class="badge ${st.clase}">${st.estado}</span></td>
-      <td>${st.diasTexto}</td>
-      <td>
-        <button onclick="abrirDocumento('${dni}','${p.key}')">
-          Abrir PDF
-        </button>
-        <span style="margin-left:8px; font-weight:bold; color:${existe ? 'green' : 'red'}">
-          ${existe ? '✔' : '✖'}
-        </span>
-      </td>
-    </tr>
+      <tr>
+        <td>${p.label}</td>
+        <td>${fmtDate(emo)}</td>
+        <td>${fmtDate(vig)}</td>
+
+        <td>
+          <span class="badge ${st.clase}">
+            ${st.estado}
+          </span>
+        </td>
+
+        <td>${st.diasTexto}</td>
+
+        ${
+          archivosLocal.length
+          ? `
+            <td>
+              <button onclick="abrirDocumento('${dni}','${p.key}')">
+                Abrir PDF
+              </button>
+
+              <span style="
+                margin-left:8px;
+                font-weight:bold;
+                color:${existe ? 'green' : 'red'};
+              ">
+                ${existe ? "✔" : "✖"}
+              </span>
+            </td>
+          `
+          : ""
+        }
+
+      </tr>
     `;
   }
 
@@ -439,54 +471,54 @@ function renderWorkerSummary(worker){
     const vig = parseDate(get(worker,p.vigenciaCol));
     const st = statusFromVigencia(vig);
 
-    if(st.estado === "VIGENTE") vigentes++;
-    else if(st.estado === "POR VENCER") porVencer++;
-    else if(st.estado === "NO VIGENTE") noVigentes++;
+    if(st.estado === "VIGENTE"){
+      vigentes++;
+    }
+    else if(st.estado === "POR VENCER"){
+      porVencer++;
+    }
+    else if(st.estado === "NO VIGENTE"){
+      noVigentes++;
+    }
 
   });
 
-cont.innerHTML = `
+  cont.innerHTML = `
 
-  <div class="kpi ok">
+    <div class="kpi ok">
+      <div class="kpi-content">
+        <span>Vigentes</span>
 
-    <div class="kpi-content">
-      <span>Vigentes</span>
-
-      <div class="kpi-number-row">
-        <i class="fa-regular fa-circle-check"></i>
-        <b>${vigentes}</b>
+        <div class="kpi-number-row">
+          <i class="fa-regular fa-circle-check"></i>
+          <b>${vigentes}</b>
+        </div>
       </div>
     </div>
 
-  </div>
+    <div class="kpi warn">
+      <div class="kpi-content">
+        <span>Por vencer</span>
 
-  <div class="kpi warn">
-
-    <div class="kpi-content">
-      <span>Por vencer</span>
-
-      <div class="kpi-number-row">
-        <i class="fa-regular fa-clock"></i>
-        <b>${porVencer}</b>
+        <div class="kpi-number-row">
+          <i class="fa-regular fa-clock"></i>
+          <b>${porVencer}</b>
+        </div>
       </div>
     </div>
 
-  </div>
+    <div class="kpi bad">
+      <div class="kpi-content">
+        <span>No vigentes</span>
 
-  <div class="kpi bad">
-
-    <div class="kpi-content">
-      <span>No vigentes</span>
-
-      <div class="kpi-number-row">
-        <i class="fa-regular fa-circle-xmark"></i>
-        <b>${noVigentes}</b>
+        <div class="kpi-number-row">
+          <i class="fa-regular fa-circle-xmark"></i>
+          <b>${noVigentes}</b>
+        </div>
       </div>
     </div>
 
-  </div>
-
-`;
+  `;
 }
 
 /* =========================
