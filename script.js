@@ -474,6 +474,51 @@ function renderBulkList(){
   cont.innerHTML = html;
 }
 
+function renderBulkList(){
+
+  const cont = document.getElementById("bulkList");
+  if(!cont) return;
+
+  const tipo = document.getElementById("bulkDocType")?.value || "";
+  const txt = document.getElementById("bulkDniFilter")?.value.toLowerCase() || "";
+
+  // FILTRO REAL
+  let lista = trabajadores.filter(w => {
+
+    const nombre = (w.NOMBRES + " " + w.APELLIDOS).toLowerCase();
+    const dni = w.DNI.toLowerCase();
+
+    if(txt && !nombre.includes(txt) && !dni.includes(txt)){
+      return false;
+    }
+
+    return true;
+  });
+
+  let html = "";
+
+  lista.forEach(w => {
+
+    const existe = tipo ? existeDocumento(w.DNI, tipo) : false;
+
+    html += `
+    <div class="bulk-item">
+      <input type="checkbox" value="${w.DNI}">
+      <div>
+        <b>${w.NOMBRES} ${w.APELLIDOS}</b><br>
+        DNI: ${w.DNI}<br>
+        ${w["ÁREA"]} - ${w.GUARDIA}<br>
+        <span style="color:${existe ? 'green' : 'red'}; font-weight:bold;">
+          ${tipo ? (existe ? '✔ Disponible' : '✖ No existe') : ''}
+        </span>
+      </div>
+    </div>
+    `;
+  });
+
+  cont.innerHTML = html;
+}
+
 function renderChart(){
 
   const cont = document.getElementById("barChart");
@@ -665,7 +710,43 @@ function setupEvents(){
     document.getElementById("connectionStatus").textContent = "Carpeta cargada";
 
   });
+      // Seleccionar todo
+   document.getElementById("btnSelectAll")
+   .addEventListener("click", () => {
+   
+     const checks = document.querySelectorAll("#bulkList input[type='checkbox']");
+     const allChecked = [...checks].every(c => c.checked);
+   
+     checks.forEach(c => c.checked = !allChecked);
+   });
 
+   // 🖨️ Imprimir seleccionados
+   document.getElementById("btnPrintSelected")
+   .addEventListener("click", () => {
+   
+     const tipo = document.getElementById("bulkDocType").value;
+   
+     if(!tipo){
+       alert("Selecciona tipo de documento");
+       return;
+     }
+   
+     const seleccionados = document.querySelectorAll("#bulkList input:checked");
+   
+     if(seleccionados.length === 0){
+       alert("Selecciona al menos un trabajador");
+       return;
+     }
+   
+     seleccionados.forEach((ch, i) => {
+   
+       setTimeout(() => {
+         abrirDocumento(ch.value, tipo);
+       }, i * 700);
+   
+     });
+   
+   });
 }
 
 /* =========================
