@@ -396,3 +396,19 @@ tr:hover td{
 .worker-right{
   flex:1;
 }
+
+/* =========================
+   FOTO ESTADO
+========================= */
+
+.worker-left img.ok{
+  border:3px solid #16a34a;
+}
+
+.worker-left img.warn{
+  border:3px solid #f59e0b;
+}
+
+.worker-left img.bad{
+  border:3px solid #ef4444;
+}
