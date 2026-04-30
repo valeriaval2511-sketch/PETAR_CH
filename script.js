@@ -405,30 +405,29 @@ function initFilters(){
     fP.innerHTML = '<option value="">Todos</option>' +
       permisos.map(p => `<option>${p}</option>`).join("");
   }
-}
+const fE = document.getElementById("filterEstado");
 
+if(fE){
+  fE.innerHTML = `
+    <option value="">Todos</option>
+    <option value="VIGENTE">VIGENTE</option>
+    <option value="POR VENCER">POR VENCER</option>
+    <option value="NO VIGENTE">NO VIGENTE</option>
+  `;
+}
+}
+   
 function renderControl(){
 
   const tbody = document.getElementById("controlTable");
+  if(!tbody) return;
 
-  const fG = document.getElementById("filterGuardia").value;
-  const fA = document.getElementById("filterArea").value;
-  const fP = document.getElementById("filterPermiso").value;
-  const fE = document.getElementById("filterEstado").value;
-
-  let data = permisosLong.filter(p => {
-
-    if(fG && p.guardia !== fG) return false;
-    if(fA && p.area !== fA) return false;
-    if(fP && p.permiso !== fP) return false;
-    if(fE && p.estado !== fE) return false;
-
-    return true;
-  });
+  const data = getDataFiltrada();
 
   let html = "";
 
   data.forEach(p => {
+
     html += `
     <tr>
       <td>${p.dni}</td>
@@ -475,12 +474,24 @@ function renderChart(){
   const cont = document.getElementById("barChart");
   if(!cont) return;
 
+  // 🔥 sin filtro de estado
+  const fG = document.getElementById("filterGuardia").value;
+  const fA = document.getElementById("filterArea").value;
+  const fP = document.getElementById("filterPermiso").value;
+
+  const data = permisosLong.filter(p => {
+
+    if(fG && p.guardia !== fG) return false;
+    if(fA && p.area !== fA) return false;
+    if(fP && p.permiso !== fP) return false;
+
+    return true;
+  });
+
   const estados = ["VIGENTE","POR VENCER","NO VIGENTE"];
 
   const counts = estados.map(e =>
-    permisosLong.filter(x => 
-      (x.estado || "").toUpperCase() === e
-    ).length
+    data.filter(x => x.estado === e).length
   );
 
   const max = Math.max(...counts,1);
@@ -490,7 +501,9 @@ function renderChart(){
   estados.forEach((e,i)=>{
 
     const val = counts[i];
-    const h = (val / max) * 150;
+
+    // 🔥 mínimo visible
+    const h = Math.max((val / max) * 150, 10);
 
     let color = "#6b7280";
     if(e==="VIGENTE") color="#137333";
@@ -508,6 +521,29 @@ function renderChart(){
   });
 
   cont.innerHTML = html;
+}
+
+function updateAll(){
+  renderControl();
+  renderChart();
+}
+
+function getDataFiltrada(){
+
+  const fG = document.getElementById("filterGuardia").value;
+  const fA = document.getElementById("filterArea").value;
+  const fP = document.getElementById("filterPermiso").value;
+  const fE = document.getElementById("filterEstado").value;
+
+  return permisosLong.filter(p => {
+
+    if(fG && p.guardia !== fG) return false;
+    if(fA && p.area !== fA) return false;
+    if(fP && p.permiso !== fP) return false;
+    if(fE && p.estado !== fE) return false;
+
+    return true;
+  });
 }
 
 /* =========================
@@ -570,11 +606,11 @@ function setupEvents(){
   });
 
   // filtros
-  ["filterGuardia","filterArea","filterPermiso","filterEstado"]
-  .forEach(id => {
-    const el = document.getElementById(id);
-    if(el) el.addEventListener("change", renderControl);
-  });
+   ["filterGuardia","filterArea","filterPermiso","filterEstado"]
+   .forEach(id => {
+     const el = document.getElementById(id);
+     if(el) el.addEventListener("change", updateAll);
+   });
 
   // actualizar
   document.getElementById("btnActualizar")
