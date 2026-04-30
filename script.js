@@ -324,19 +324,17 @@ function renderWorkerPerms(worker){
 
 function buscarArchivo(dni, tipo){
 
-  return archivosLocal.find(f => {
+  return archivosLocal.find(file => {
 
-    const nombre = f.name.toLowerCase();
-    const partes = f.webkitRelativePath.split("/");
-
-    const carpeta = partes[0].toLowerCase(); // 🔥 nombre de carpeta
+    const path = file.webkitRelativePath.toUpperCase();
 
     return (
-      nombre === dni.toLowerCase() + ".pdf" &&
-      carpeta === tipo.toLowerCase()
+      path.includes(tipo.toUpperCase()) &&
+      file.name.toUpperCase() === dni + ".PDF"
     );
 
   });
+
 }
 
 function existeDocumento(dni, tipo){
