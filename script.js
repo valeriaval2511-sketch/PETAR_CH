@@ -12,7 +12,6 @@ let archivosLocal = [];
 
 /* ===== PERMISOS ===== */
 const PERMISOS = [
-  { key:"DNI", label:"Documento DNI", vigenciaCol:null, emoCol:null },
   { key:"LICENCIA", label:"Licencia de Conducir", vigenciaCol:"VIGENCIA LICENCIA", emoCol:null },
   { key:"ALTURA", label:"Trabajo en Altura", vigenciaCol:"VIGENCIA AUTORIZACION T. ALTURA", emoCol:"FECHA EMO - ALTURA" },
   { key:"CALIENTE", label:"Trabajo en Caliente", vigenciaCol:"VIGENCIA AUTORIZACION T. CALIENTE", emoCol:"FECHA EMO - CALIENTE" },
