@@ -197,9 +197,33 @@ h1{
 /* =========================
    SEARCH
 ========================= */
+/* =========================
+   SEARCH
+========================= */
+
+.search-card{
+  padding:18px 24px;
+}
+
+.search-card h2,
+.search-card h3{
+  margin-top:0;
+  margin-bottom:10px;
+}
+
+.search-card p{
+  display:none;
+}
+
 .search-row{
   display:flex;
+  align-items:center;
   gap:10px;
+  margin-top:10px;
+}
+
+.search-row input{
+  width:320px;
 }
 
 input,
