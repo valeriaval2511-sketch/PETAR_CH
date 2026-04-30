@@ -907,6 +907,10 @@ function setupEvents(){
      </div>
    `;
 
+     if(currentWorker){
+        renderWorkerPerms(currentWorker);
+      }
+
  
   });
       // Seleccionar todo
