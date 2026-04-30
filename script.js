@@ -194,6 +194,7 @@ function loadData(){
     initFilters();
     renderControl();
     renderBulkList();
+    renderChart();
 
   });
 
@@ -463,6 +464,44 @@ function renderBulkList(){
         ${w.area} - ${w.guardia}
       </div>
     </div>
+    `;
+  });
+
+  cont.innerHTML = html;
+}
+
+function renderChart(){
+
+  const cont = document.getElementById("barChart");
+  if(!cont) return;
+
+  const estados = ["VIGENTE","POR VENCER","NO VIGENTE"];
+
+  const counts = estados.map(e =>
+    permisosLong.filter(x => x.estado === e).length
+  );
+
+  const max = Math.max(...counts,1);
+
+  let html = "";
+
+  estados.forEach((e,i)=>{
+
+    const val = counts[i];
+    const h = (val / max) * 150;
+
+    let color = "#6b7280";
+    if(e==="VIGENTE") color="#137333";
+    if(e==="POR VENCER") color="#b85c00";
+    if(e==="NO VIGENTE") color="#b42318";
+
+    html += `
+      <div class="bar">
+        <div class="bar-fill" style="height:${h}px; background:${color}">
+          ${val}
+        </div>
+        <label>${e}</label>
+      </div>
     `;
   });
 
