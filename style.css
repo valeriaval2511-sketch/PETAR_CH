@@ -584,3 +584,38 @@ tr:hover td{
     flex-direction:column;
   }
 }
+
+.filters{
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+  margin-top:20px;
+}
+
+.filter-group{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  min-width:220px;
+}
+
+.filter-group label{
+  font-size:14px;
+  font-weight:600;
+  color:#0b5d3b;
+}
+
+.filter-group select{
+  height:45px;
+  border:1px solid #d9e3dc;
+  border-radius:12px;
+  padding:0 12px;
+  font-size:14px;
+}
+
+.bulk-actions{
+  display:flex;
+  gap:12px;
+  margin-top:20px;
+  flex-wrap:wrap;
+}
