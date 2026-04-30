@@ -161,56 +161,58 @@ function statusFromVigencia(vig){
    CARGA DATA
 ========================= */
 
-async function loadData(){
+function loadData(){
 
-  const status =
-    document.getElementById("connectionStatus");
+  const status = document.getElementById("connectionStatus");
 
-  try{
+  status.textContent = "Conectando...";
 
-    status.textContent = "Conectando...";
-
-    const res = await fetch(
-      API_URL + "?action=list",
-      {
-        method:"GET",
-        mode:"cors"
-      }
-    );
-
-    const json = await res.json();
+  jsonp(API_URL + "?action=list", function(json){
 
     if(!json.ok){
-      throw new Error("Sin data");
+
+      console.error("Error API");
+
+      trabajadores = DEMO_DATA.map(x => ({
+        ...x,
+        DNI: normalizeDni(x.DNI)
+      }));
+
+      status.textContent = "Modo local";
+
+    }else{
+
+      trabajadores = json.data.map(x => ({
+        ...x,
+        DNI: normalizeDni(x.DNI)
+      }));
+
+      status.textContent = "Conectado a Google Sheets";
     }
 
-    trabajadores = json.data.map(x => ({
-      ...x,
-      DNI: normalizeDni(x.DNI)
-    }));
+    permisosLong = buildPermisosLong();
+    initFilters();
+    renderControl();
+    renderBulkList();
 
-    status.textContent =
-      "Conectado a Google Sheets";
+  });
 
-  }catch(error){
+}
 
-    console.log(error);
+function jsonp(url, callback){
 
-    trabajadores = DEMO_DATA.map(x => ({
-      ...x,
-      DNI: normalizeDni(x.DNI)
-    }));
+  const cbName = "cb_" + Date.now();
 
-    status.textContent =
-      "Modo local";
+  window[cbName] = function(data){
+    callback(data);
+    delete window[cbName];
+    script.remove();
+  };
 
-  }
+  const script = document.createElement("script");
+  script.src = url + "&callback=" + cbName;
 
-  permisosLong = buildPermisosLong();
-
-  initFilters();
-  renderControl();
-  renderBulkList();
+  document.body.appendChild(script);
 }
 
 /* =========================
