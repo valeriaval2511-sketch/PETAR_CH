@@ -36,6 +36,9 @@ let trabajadores = [];
 let permisosLong = [];
 let currentWorker = null;
 
+let bulkCurrentPage = 1;
+let bulkPerPage = 16;
+
 /* ===== DEMO ===== */
 const DEMO_DATA = [
 {
@@ -719,6 +722,8 @@ function renderControl(){
 function renderBulkList(){
 
   const cont = document.getElementById("bulkList");
+  const pagination = document.getElementById("bulkPagination");
+
   if(!cont) return;
 
   const areaFilter =
@@ -741,27 +746,32 @@ function renderBulkList(){
     }
 
     if(docFilter){
-
-      const tieneDoc = buscarArchivo(
-        w.DNI,
-        docFilter
-      );
-
-      if(!tieneDoc){
-        return false;
-      }
+      const tieneDoc = buscarArchivo(w.DNI, docFilter);
+      if(!tieneDoc) return false;
     }
 
     return true;
   });
 
+  const totalPages =
+    Math.ceil(lista.length / bulkPerPage);
+
+  if(bulkCurrentPage > totalPages){
+    bulkCurrentPage = 1;
+  }
+
+  const start =
+    (bulkCurrentPage - 1) * bulkPerPage;
+
+  const end =
+    start + bulkPerPage;
+
+  const paginated =
+    lista.slice(start, end);
+
   let html = "";
 
-  lista.forEach(w => {
-
-    const existe = docFilter
-      ? existeDocumento(w.DNI, docFilter)
-      : false;
+  paginated.forEach(w => {
 
     html += `
       <div class="bulk-item">
@@ -770,20 +780,7 @@ function renderBulkList(){
         <div>
           <b>${w.NOMBRES} ${w.APELLIDOS}</b><br>
           DNI: ${w.DNI}<br>
-          ${w["ÁREA"]} - Guardia ${w.GUARDIA}<br>
-
-          ${
-            docFilter
-            ? `
-            <span style="
-              color:${existe ? 'green' : 'red'};
-              font-weight:bold;
-            ">
-              ${existe ? '✔ Disponible' : '✖ No existe'}
-            </span>
-            `
-            : ""
-          }
+          ${w["ÁREA"]} - ${w.GUARDIA}
         </div>
       </div>
     `;
@@ -791,14 +788,70 @@ function renderBulkList(){
 
   cont.innerHTML = html;
 
-   document.querySelectorAll("#bulkList input")
-.forEach(ch => {
-  ch.addEventListener("change", updateSelectedCounter);
-});
+  document.querySelectorAll("#bulkList input")
+  .forEach(ch => {
+    ch.addEventListener("change", updateSelectedCounter);
+  });
 
-updateSelectedCounter();
-   
+  updateSelectedCounter();
+
+  renderBulkPagination(totalPages);
 }
+
+function renderBulkPagination(totalPages){
+
+  const cont =
+    document.getElementById("bulkPagination");
+
+  if(!cont) return;
+
+  let html = "";
+
+  for(let i=1;i<=totalPages;i++){
+
+    html += `
+      <button
+        class="${
+          i === bulkCurrentPage ? "active-page" : ""
+        }"
+        onclick="changeBulkPage(${i})"
+      >
+        ${i}
+      </button>
+    `;
+  }
+
+  html += `
+    <select id="bulkPerPageSelect">
+      <option value="8">8</option>
+      <option value="16" selected>16</option>
+      <option value="24">24</option>
+      <option value="50">50</option>
+    </select>
+  `;
+
+  cont.innerHTML = html;
+
+  document.getElementById("bulkPerPageSelect")
+  .value = bulkPerPage;
+
+  document.getElementById("bulkPerPageSelect")
+  .addEventListener("change", function(){
+
+    bulkPerPage = Number(this.value);
+    bulkCurrentPage = 1;
+
+    renderBulkList();
+
+  });
+}
+
+
+function changeBulkPage(page){
+  bulkCurrentPage = page;
+  renderBulkList();
+}
+
 
 function updateSelectedCounter(){
 
