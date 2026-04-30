@@ -874,7 +874,14 @@ function getDataFiltrada(){
 ========================= */
 function openSelectedDocs(){
 
-  const checks = document.querySelectorAll(".bulk-check:checked");
+  const tipo = document.getElementById("bulkDocFilter").value;
+
+  if(!tipo){
+    toast("Selecciona un documento.");
+    return;
+  }
+
+  const checks = document.querySelectorAll("#bulkList input:checked");
 
   if(checks.length === 0){
     toast("Selecciona al menos un trabajador.");
@@ -882,42 +889,19 @@ function openSelectedDocs(){
   }
 
   checks.forEach(c => {
-    console.log("Seleccionado:", c.value);
+    abrirDocumento(c.value, tipo);
   });
-
-  toast("Función activa.");
 }
 
-function cargarTiposDocumento(){
-
-  const select = document.getElementById("bulkDocType");
-
-  if(!select || archivosLocal.length === 0) return;
-
-  // obtener carpetas únicas
-  const tipos = new Set();
-
-  archivosLocal.forEach(file => {
-    const partes = file.webkitRelativePath.split("/");
-
-    if(partes.length > 1){
-      tipos.add(partes[1].toUpperCase());
-    }
-  });
-
-  // llenar select
-  select.innerHTML = `<option value="">Seleccionar</option>` +
-    [...tipos].map(t => `<option value="${t}">${t}</option>`).join("");
-
-}
 
 function setupEvents(){
 
-  // Buscar DNI
+  /* ======================
+     BUSCAR DNI
+  ====================== */
   document.getElementById("btnBuscar")
   .addEventListener("click", searchWorker);
 
-  // Enter DNI
   document.getElementById("dniInput")
   .addEventListener("keydown", function(e){
     if(e.key === "Enter"){
@@ -925,7 +909,10 @@ function setupEvents(){
     }
   });
 
-  // Tabs
+
+  /* ======================
+     TABS
+  ====================== */
   document.querySelectorAll(".tab").forEach(tab => {
 
     tab.addEventListener("click", function(){
@@ -947,41 +934,60 @@ function setupEvents(){
 
   });
 
-  // Filtros
+
+  /* ======================
+     FILTROS CONTROL OPERATIVO
+  ====================== */
   ["filterGuardia","filterArea","filterPermiso","filterEstado"]
   .forEach(id => {
+
     const el = document.getElementById(id);
-    if(el) el.addEventListener("change", updateAll);
+
+    if(el){
+      el.addEventListener("change", updateAll);
+    }
+
   });
 
-  // Actualizar data
+
+  /* ======================
+     ACTUALIZAR DATA
+  ====================== */
   document.getElementById("btnActualizar")
   .addEventListener("click", loadData);
 
-  // Filtro DNI en lista
-   ["bulkAreaFilter","bulkGuardiaFilter","bulkDocFilter"]
-   .forEach(id => {
-   
-     const el = document.getElementById(id);
-   
-     if(el){
-       el.addEventListener("change", renderBulkList);
-     }
-   
-   });
 
-  // BOTÓN ABRIR DOCUMENTOS (CORRECTO)
+  /* ======================
+     FILTROS IMPRESIÓN
+  ====================== */
+  ["bulkAreaFilter","bulkGuardiaFilter","bulkDocFilter"]
+  .forEach(id => {
+
+    const el = document.getElementById(id);
+
+    if(el){
+      el.addEventListener("change", renderBulkList);
+    }
+
+  });
+
+
+  /* ======================
+     BOTÓN ABRIR DOCUMENTOS
+  ====================== */
   document.getElementById("btnOpenSelected")
   .addEventListener("click", () => {
 
-   const tipo = document.getElementById("bulkDocFilter").value;
+    const tipo =
+      document.getElementById("bulkDocFilter").value;
 
     if(!tipo){
       alert("Selecciona tipo de documento");
       return;
     }
 
-    const checks = document.querySelectorAll("#bulkList input:checked");
+    const checks =
+      document.querySelectorAll("#bulkList input:checked");
 
     if(checks.length === 0){
       alert("Selecciona al menos un trabajador");
@@ -994,78 +1000,99 @@ function setupEvents(){
 
   });
 
-  // Botón seleccionar carpeta
+
+  /* ======================
+     BOTÓN CARGAR CARPETA
+  ====================== */
   document.getElementById("btnCarpeta")
   .addEventListener("click", () => {
     document.getElementById("folderInput").click();
   });
 
-  // Leer carpeta local
+
+  /* ======================
+     LEER CARPETA LOCAL
+  ====================== */
   document.getElementById("folderInput")
   .addEventListener("change", (e) => {
 
     archivosLocal = Array.from(e.target.files);
-     
-     populateDocumentFilter();
-      
-     cargarTiposDocumento();
+
+    populateDocumentFilter();
 
     console.log("Archivos cargados:", archivosLocal);
 
     const nombreCarpeta =
-     archivosLocal[0]?.webkitRelativePath.split("/")[0] || "";
-   
-   document.getElementById("folderStatus").innerHTML = `
-     <i class="fa-solid fa-folder-open"></i>
-     <div class="status-text">
-       <strong>Carpeta cargada</strong>
-       <span>${nombreCarpeta}</span>
-     </div>
-   `;
+      archivosLocal[0]?.webkitRelativePath.split("/")[0] || "";
 
-     if(currentWorker){
-        renderWorkerPerms(currentWorker);
-      }
+    document.getElementById("folderStatus").innerHTML = `
+      <i class="fa-solid fa-folder-open"></i>
+      <div class="status-text">
+        <strong>Carpeta cargada</strong>
+        <span>${nombreCarpeta}</span>
+      </div>
+    `;
 
- 
+    if(currentWorker){
+      renderWorkerPerms(currentWorker);
+    }
+
+    renderBulkList();
+
   });
-      // Seleccionar todo
-   document.getElementById("btnSelectAll")
-   .addEventListener("click", () => {
-   
-     const checks = document.querySelectorAll("#bulkList input[type='checkbox']");
-     const allChecked = [...checks].every(c => c.checked);
-   
-     checks.forEach(c => c.checked = !allChecked);
-   });
 
-   // Imprimir seleccionados
-   document.getElementById("btnPrintSelected")
-   .addEventListener("click", () => {
-   
-      const tipo = document.getElementById("bulkDocFilter").value;
-   
-     if(!tipo){
-       alert("Selecciona tipo de documento");
-       return;
-     }
-   
-     const seleccionados = document.querySelectorAll("#bulkList input:checked");
-   
-     if(seleccionados.length === 0){
-       alert("Selecciona al menos un trabajador");
-       return;
-     }
-   
-     seleccionados.forEach((ch, i) => {
-   
-       setTimeout(() => {
-         abrirDocumento(ch.value, tipo);
-       }, i * 700);
-   
-     });
-   
-   });
+
+  /* ======================
+     SELECCIONAR TODO
+  ====================== */
+  document.getElementById("btnSelectAll")
+  .addEventListener("click", () => {
+
+    const checks =
+      document.querySelectorAll(
+        "#bulkList input[type='checkbox']"
+      );
+
+    const allChecked =
+      [...checks].every(c => c.checked);
+
+    checks.forEach(c => c.checked = !allChecked);
+
+  });
+
+
+  /* ======================
+     IMPRIMIR SELECCIONADOS
+  ====================== */
+  document.getElementById("btnPrintSelected")
+  .addEventListener("click", () => {
+
+    const tipo =
+      document.getElementById("bulkDocFilter").value;
+
+    if(!tipo){
+      alert("Selecciona tipo de documento");
+      return;
+    }
+
+    const seleccionados =
+      document.querySelectorAll("#bulkList input:checked");
+
+    if(seleccionados.length === 0){
+      alert("Selecciona al menos un trabajador");
+      return;
+    }
+
+    seleccionados.forEach((ch, i) => {
+
+      setTimeout(() => {
+        abrirDocumento(ch.value, tipo);
+      }, i * 700);
+
+    });
+
+  });
+
 }
 
 /* =========================
