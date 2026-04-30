@@ -163,14 +163,15 @@ function statusFromVigencia(vig){
 function loadData(){
 
   const status = document.getElementById("connectionStatus");
-
   status.textContent = "Conectando...";
 
-  jsonp(API_URL + "?action=list", function(json){
+  fetch(API_URL + "?action=list")
+  .then(res => res.json())
+  .then(json => {
 
-    if(!json.ok){
+    console.log("API:", json);
 
-      console.error("Error API");
+    if(!json || !json.ok){
 
       trabajadores = DEMO_DATA.map(x => ({
         ...x,
@@ -191,39 +192,34 @@ function loadData(){
 
     permisosLong = buildPermisosLong();
     initFilters();
-     const docSelect = document.getElementById("bulkDocType");
-   if(docSelect){
-     docSelect.innerHTML = `
-       <option value="DNI">DNI</option>
-       <option value="LICENCIA">LICENCIA</option>
-       <option value="ALTURA">ALTURA</option>
-       <option value="CALIENTE">CALIENTE</option>
-       <option value="CONFINADO">CONFINADO</option>
-       <option value="IZAJE">IZAJE</option>
-     `;
-   }
+
+    const docSelect = document.getElementById("bulkDocType");
+    if(docSelect){
+      docSelect.innerHTML = `
+        <option value="">Seleccionar</option>
+        <option value="DNI">DNI</option>
+        <option value="LICENCIA">LICENCIA</option>
+        <option value="ALTURA">ALTURA</option>
+        <option value="CALIENTE">CALIENTE</option>
+        <option value="CONFINADO">CONFINADO</option>
+        <option value="IZAJE">IZAJE</option>
+      `;
+    }
+
     renderControl();
     renderBulkList();
     renderChart();
 
+  })
+  .catch(err => {
+
+    console.error("ERROR:", err);
+
+    trabajadores = DEMO_DATA;
+    status.textContent = "Modo local";
+
   });
 
-}
-
-function jsonp(url, callback){
-
-  const cbName = "cb_" + Date.now();
-
-  window[cbName] = function(data){
-    callback(data);
-    delete window[cbName];
-    script.remove();
-  };
-
-  const script = document.createElement("script");
-  script.src = url + "&callback=" + cbName;
-
-  document.body.appendChild(script);
 }
 
 /* =========================
@@ -308,31 +304,24 @@ function renderWorkerPerms(worker){
       ? statusFromVigencia(vig)
       : {estado:"—",clase:"unknown",diasTexto:"—"};
 
+    // 🔥 AQUÍ VA JS (fuera del HTML)
+    const existe = existeDocumento(dni, p.key);
+
+    // 🔥 AQUÍ VA SOLO HTML
     html += `
     <tr>
       <td>${p.label}</td>
       <td>${fmtDate(vig)}</td>
       <td><span class="badge ${st.clase}">${st.estado}</span></td>
       <td>${st.diasTexto}</td>
-
-      const existe = existeDocumento(dni, p.key);
-
-      html += `
-      <tr>
-        <td>${p.label}</td>
-        <td>${fmtDate(vig)}</td>
-        <td><span class="badge ${st.clase}">${st.estado}</span></td>
-        <td>${st.diasTexto}</td>
-        <td>
-          <button onclick="abrirDocumento('${dni}','${p.key}')">
-            Abrir PDF
-          </button>
-          <span style="margin-left:8px; font-weight:bold; color:${existe ? 'green' : 'red'}">
-            ${existe ? '✔' : '✖'}
-          </span>
-        </td>
-      </tr>
-      `;
+      <td>
+        <button onclick="abrirDocumento('${dni}','${p.key}')">
+          Abrir PDF
+        </button>
+        <span style="margin-left:8px; font-weight:bold; color:${existe ? 'green' : 'red'}">
+          ${existe ? '✔' : '✖'}
+        </span>
+      </td>
     </tr>
     `;
   }
