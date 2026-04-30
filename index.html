@@ -46,7 +46,6 @@
     </nav>
 
     <section id="consulta" class="panel active">
-      <div class="dashboard-global" id="dashboardGlobal"></div>
       <div class="card search-card">
         <div>
           <h2>Buscar trabajador</h2>
@@ -58,27 +57,27 @@
         </div>
       </div>
 
-        <div class="grid-2">
-
-          <div class="card worker-card">
-        
-            <div class="worker-left">
-              <img id="fotoTrabajador" src="" alt="Foto">
-            </div>
-        
-            <div class="worker-right">
-              <h3>Información del trabajador</h3>
-              <div class="info-grid" id="workerInfo"></div>
-            </div>
-        
-          </div>
-        <div class="card summary-card">
-          <h3>Resumen de estado</h3>
-          <div class="summary" id="workerSummary"></div>
-        </div>
+      <div class="card worker-card">
+    
+      <div class="worker-left">
+        <img id="fotoTrabajador">
+        <div id="workerBadge" class="worker-badge">OK</div>
       </div>
+    
+      <div class="worker-right">
+        <h3>Información del trabajador</h3>
+        <div class="info-grid" id="workerInfo"></div>
+      </div>
+    
+    </div>
+    
+    <!-- 🔥 RESUMEN ABAJO -->
+    <div class="card summary-card">
+      <h3>Resumen de estado</h3>
+      <div class="summary" id="workerSummary"></div>
+    </div>
 
-      <div class="card">
+           <div class="card">
         <div class="section-title">
           <h3>Permisos y vigencias</h3>
           <span id="todayLabel"></span>
