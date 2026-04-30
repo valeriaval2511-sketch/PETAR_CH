@@ -815,8 +815,13 @@ function setupEvents(){
     const nombreCarpeta =
      archivosLocal[0]?.webkitRelativePath.split("/")[0] || "";
    
-   document.getElementById("folderStatus").textContent =
-     "Carpeta: " + nombreCarpeta;
+   document.getElementById("folderStatus").innerHTML = `
+     <i class="fa-solid fa-folder-open"></i>
+     <div>
+       <strong>Carpeta cargada</strong>
+       <span>${nombreCarpeta}</span>
+     </div>
+   `;
 
   });
       // Seleccionar todo
