@@ -290,9 +290,18 @@ function searchWorker(){
    const worker = trabajadores.find(
      x => normalizeDni(x.DNI) === dni
    );
-      
+
    if(!worker){
-     toast("No encontrado.");
+
+     const valorInput = document
+       .getElementById("dniInput")
+       .value
+       .trim();
+   
+     if(valorInput !== ""){
+       toast("No encontrado.");
+     }
+   
      return;
    }
 
