@@ -616,7 +616,21 @@ tr:hover td{
 
 .bulk-actions{
   display:flex;
-  gap:12px;
+  justify-content:space-between;
+  align-items:center;
   margin-top:20px;
+  flex-wrap:wrap;
+  gap:15px;
+}
+
+.selected-counter{
+  font-size:14px;
+  color:#6b7280;
+  font-weight:500;
+}
+
+.bulk-buttons{
+  display:flex;
+  gap:12px;
   flex-wrap:wrap;
 }
