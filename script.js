@@ -335,12 +335,19 @@ function renderWorkerPerms(worker){
 
 function buscarArchivo(dni, tipo){
 
-  const nombre = dni + ".pdf";
+  return archivosLocal.find(f => {
 
-  return archivosLocal.find(f => 
-    f.name === nombre && 
-    f.webkitRelativePath.toUpperCase().includes(tipo.toUpperCase())
-  );
+    const nombre = f.name.toLowerCase();
+    const partes = f.webkitRelativePath.split("/");
+
+    const carpeta = partes[0].toLowerCase(); // 🔥 nombre de carpeta
+
+    return (
+      nombre === dni.toLowerCase() + ".pdf" &&
+      carpeta === tipo.toLowerCase()
+    );
+
+  });
 }
 
 function existeDocumento(dni, tipo){
