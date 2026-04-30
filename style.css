@@ -129,6 +129,13 @@ h1{
   box-shadow:0 4px 10px rgba(0,0,0,.10);
 }
 
+.status-text{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  line-height:1.1;
+}
+
 .status-pill i{
   font-size:18px;
 }
@@ -152,7 +159,7 @@ h1{
   background:linear-gradient(135deg,#0d74c9,#0b5ca1);
   color:white;
   width:auto;
-  min-width:170px;
+  min-width:180px;
 }
 
 .db-status{
