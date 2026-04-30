@@ -250,14 +250,19 @@ h1{
 }
 
 .section-title{
-  margin:0 0 20px 0;
-  font-size:20px;
+  margin:0 0 14px 0;
+  font-size:18px;
   font-weight:700;
   color:#0f5132;
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:8px;
 }
+
+.section-title i{
+  font-size:18px;
+}
+
 /* =========================
    SEARCH
 ========================= */
