@@ -272,8 +272,9 @@ function searchWorker(){
 
   currentWorker = worker;
 
-  renderWorkerInfo(worker);
-  renderWorkerPerms(worker);
+   renderWorkerInfo(worker);
+   renderWorkerPerms(worker);
+   renderWorkerSummary(worker);
 }
 
 function renderWorkerInfo(w){
@@ -295,18 +296,21 @@ function renderWorkerPerms(worker){
 
   for(const p of PERMISOS){
 
+    // 🔥 NUEVO: EMO
+    const emo = p.emoCol ? parseDate(get(worker,p.emoCol)) : null;
+
     const vig = parseDate(get(worker,p.vigenciaCol));
+
     const st = p.vigenciaCol
       ? statusFromVigencia(vig)
       : {estado:"—",clase:"unknown",diasTexto:"—"};
 
-    // AQUÍ VA JS (fuera del HTML)
     const existe = existeDocumento(dni, p.key);
 
-    // AQUÍ VA SOLO HTML
     html += `
     <tr>
       <td>${p.label}</td>
+      <td>${fmtDate(emo)}</td> <!-- 🔥 EMO -->
       <td>${fmtDate(vig)}</td>
       <td><span class="badge ${st.clase}">${st.estado}</span></td>
       <td>${st.diasTexto}</td>
@@ -323,6 +327,34 @@ function renderWorkerPerms(worker){
   }
 
   tbody.innerHTML = html;
+}
+
+function renderWorkerSummary(worker){
+
+  const cont = document.getElementById("workerSummary");
+  if(!cont) return;
+
+  let vigentes = 0;
+  let porVencer = 0;
+  let noVigentes = 0;
+
+  PERMISOS.forEach(p => {
+
+    if(!p.vigenciaCol) return;
+
+    const vig = parseDate(get(worker,p.vigenciaCol));
+    const st = statusFromVigencia(vig);
+
+    if(st.estado === "VIGENTE") vigentes++;
+    else if(st.estado === "POR VENCER") porVencer++;
+    else if(st.estado === "NO VIGENTE") noVigentes++;
+  });
+
+  cont.innerHTML = `
+    <div class="kpi ok"><b>${vigentes}</b>Vigentes</div>
+    <div class="kpi warn"><b>${porVencer}</b>Por vencer</div>
+    <div class="kpi bad"><b>${noVigentes}</b>No vigentes</div>
+  `;
 }
 
 /* =========================
