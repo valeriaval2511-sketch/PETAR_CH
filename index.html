@@ -206,27 +206,46 @@
     <section id="impresion" class="panel">
       <div class="card">
         <h2>Impresión / documentos</h2>
-        <p>En versión web, los documentos deben estar en Google Drive. La app abrirá el PDF; la impresión se hace desde el visor del navegador.</p>
-        <div class="filters">
-          <label>Filtrar
-            <input id="bulkDniFilter" type="text" placeholder="DNI o nombre" />
-          </label>
-        
-          <label>Documento
-            <select id="bulkDocType"></select>
-          </label>
-        
-          <button id="btnSelectAll" class="secondary">
-            ✔ Seleccionar todo
-          </button>
-        
-          <button id="btnOpenSelected" class="secondary">
-            📂 Abrir seleccionados
-          </button>
-        
-          <button id="btnPrintSelected" class="primary">
-            🖨️ Imprimir seleccionados
-          </button>
+         <div class="filters">
+
+        <div class="filter-group">
+          <label>Área</label>
+          <select id="bulkAreaFilter">
+            <option value="">Todas las áreas</option>
+          </select>
+        </div>
+      
+        <div class="filter-group">
+          <label>Guardia</label>
+          <select id="bulkGuardiaFilter">
+            <option value="">Todas las guardias</option>
+          </select>
+        </div>
+      
+        <div class="filter-group">
+          <label>Documento</label>
+          <select id="bulkDocFilter">
+            <option value="">Todos los documentos</option>
+          </select>
+        </div>
+      
+      </div>
+      
+      <div class="bulk-actions">
+      
+        <button id="btnSelectAll" class="secondary">
+          ✔ Seleccionar todo
+        </button>
+      
+        <button id="btnOpenSelected" class="secondary">
+          📂 Abrir seleccionados
+        </button>
+      
+        <button id="btnPrintSelected" class="primary">
+          🖨️ Imprimir seleccionados
+        </button>
+      
+      </div>
         </div>
         </div>
         <div class="card">
