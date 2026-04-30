@@ -250,17 +250,18 @@ h1{
 }
 
 .section-title{
-  margin:0 0 14px 0;
-  font-size:18px;
-  font-weight:700;
-  color:#0f5132;
   display:flex;
   align-items:center;
-  gap:8px;
+  gap:10px;
+  font-size:18px;
+  font-weight:700;
+  color:#0b5d3b;
+  margin-bottom:20px;
 }
 
 .section-title i{
   font-size:18px;
+  color:#0b5d3b;
 }
 
 /* =========================
