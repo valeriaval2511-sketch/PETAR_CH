@@ -249,6 +249,15 @@ h1{
   box-shadow:var(--shadow);
 }
 
+.section-title{
+  margin:0 0 20px 0;
+  font-size:20px;
+  font-weight:700;
+  color:#0f5132;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
 /* =========================
    SEARCH
 ========================= */
@@ -370,7 +379,9 @@ button{
   padding:14px 18px;
   border-right:1px solid #e5e7eb;
   border-bottom:1px solid #eef2f1;
+  border-top:1px solid #eef2f1;
   background:white;
+  text-align:center;
 }
 
 .info-item:nth-child(4n){
@@ -379,14 +390,17 @@ button{
 
 .info-item small{
   display:block;
-  font-size:11px;
-  color:var(--muted);
-  margin-bottom:4px;
+  font-size:12px;
+  color:#176b4d;
+  font-weight:600;
+  margin-bottom:6px;
 }
 
 .info-item strong{
-  font-size:14px;
-  font-weight:600;
+  display:block;
+  font-size:15px;
+  font-weight:700;
+  text-align:center;
 }
 
 /* =========================
