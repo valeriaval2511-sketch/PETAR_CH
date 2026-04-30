@@ -8,25 +8,34 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
+
   <header class="app-header">
+
     <div class="brand">
-      <div class="logo-box">CP</div>
+  
+      <div class="logo-box">CH</div>
+  
       <div>
-        <h1>Control de Permisos</h1>
-        <p>Consulta, vigencias y trazabilidad documental por trabajador</p>
+        <h1>CATALINA HUANCA</h1>
+        <p class="subtitle">Gestión Documentaria Operativa</p>
       </div>
+  
     </div>
-    <div style="display:flex; gap:10px; align-items:center;">
-    <button id="btnCarpeta" class="secondary">
-      📁 Carpeta
-    </button>
-
-    <input type="file" id="folderInput" webkitdirectory multiple hidden>
-
-    <div class="status-pill" id="connectionStatus">
-      Modo local
+  
+    <div class="header-right">
+  
+      <button id="btnCarpeta" class="secondary">
+        📁 Carpeta
+      </button>
+  
+      <input type="file" id="folderInput" webkitdirectory multiple hidden>
+  
+      <div class="status-pill" id="connectionStatus">
+        Sin conexión
+      </div>
+  
     </div>
-  </div>
+  
   </header>
 
   <main class="layout">
