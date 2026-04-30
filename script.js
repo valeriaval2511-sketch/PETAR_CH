@@ -229,6 +229,12 @@ function loadData(){
     renderBulkList();
     renderChart();
 
+   const docHeader = document.getElementById("docHeader");
+   
+   if(docHeader){
+     docHeader.style.display = "none";
+   }
+
   });
 }
 
