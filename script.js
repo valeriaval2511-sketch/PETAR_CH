@@ -273,6 +273,15 @@ function searchWorker(){
   currentWorker = worker;
 
    renderWorkerInfo(worker);
+   const foto = buscarFoto(worker.DNI);
+   
+   const img = document.getElementById("fotoTrabajador");
+   
+   if(foto){
+     img.src = URL.createObjectURL(foto);
+   }else{
+     img.src = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+   }
    renderWorkerPerms(worker);
    renderWorkerSummary(worker);
 }
