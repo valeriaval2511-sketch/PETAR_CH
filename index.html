@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Control de Permisos</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
@@ -22,27 +23,45 @@
   
     </div>
 
-    <div class="header-right">
+      <div class="header-right">
 
-    <button id="btnCarpeta" class="btn-folder">
-      📁 Carpeta
-    </button>
-  
-    <input type="file" id="folderInput" webkitdirectory multiple hidden>
-  
-    <div class="status-group">
-  
-      <div class="status-pill folder-status" id="folderStatus">
-        Sin carpeta
+      <!-- botón carpeta -->
+      <button id="btnCarpeta" class="btn-folder">
+        <i class="fa-solid fa-folder"></i>
+        <span>Carpeta</span>
+      </button>
+    
+      <input 
+        type="file" 
+        id="folderInput" 
+        webkitdirectory 
+        multiple 
+        hidden
+      >
+    
+      <div class="status-group">
+    
+        <!-- carpeta cargada -->
+        <div class="status-pill folder-status" id="folderStatus">
+          <i class="fa-solid fa-folder-open"></i>
+          <div>
+            <strong>Carpeta cargada</strong><br>
+            <span>Sin carpeta</span>
+          </div>
+        </div>
+    
+        <!-- base de datos -->
+        <div class="status-pill db-status" id="connectionStatus">
+          <i class="fa-solid fa-database"></i>
+          <div>
+            <strong>Conectado</strong><br>
+            <span>Base de datos</span>
+          </div>
+        </div>
+    
       </div>
-  
-      <div class="status-pill db-status" id="connectionStatus">
-        Desconectado
-      </div>
-  
+    
     </div>
-  
-  </div>
   
   </header>
 
