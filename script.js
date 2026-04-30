@@ -163,9 +163,12 @@ function statusFromVigencia(vig){
 function loadData(){
 
   const status = document.getElementById("connectionStatus");
+  const docHeader = document.getElementById("docHeader");
 
   fetch(API_URL + "?action=list")
   .then(res => {
+
+    console.log("STATUS FETCH:", res.status);
 
     if(!res.ok){
       throw new Error("Respuesta no OK");
@@ -173,67 +176,67 @@ function loadData(){
 
     return res.json();
   })
+
   .then(json => {
 
     console.log("API OK:", json);
 
-    if(json && json.ok){
-
-      trabajadores = json.data;
-
-      permisosLong = buildPermisosLong();
-      initFilters();
-
-       status.innerHTML = `
-        <i class="fa-solid fa-database"></i>
-        <div>
-          <strong>Conectado</strong>
-          <span>Base de datos</span>
-        </div>
-      `;
-      
-      status.classList.remove("off");
-
-      // IMPORTANTE: refrescar UI
-      renderControl();
-      renderBulkList();
-      renderChart();
-
-    } else {
-
+    if(!json || !json.ok){
       throw new Error("JSON inválido");
+    }
 
+    trabajadores = json.data;
+
+    permisosLong = buildPermisosLong();
+    initFilters();
+
+    status.innerHTML = `
+      <i class="fa-solid fa-database"></i>
+      <div>
+        <strong>Conectado</strong>
+        <span>Base de datos</span>
+      </div>
+    `;
+
+    status.classList.remove("off");
+
+    renderControl();
+    renderBulkList();
+    renderChart();
+
+    // ocultar columna documento al iniciar
+    if(docHeader){
+      docHeader.style.display = "none";
     }
 
   })
+
   .catch(err => {
 
     console.error("ERROR FETCH:", err);
 
     trabajadores = DEMO_DATA;
 
-   permisosLong = buildPermisosLong();
-   initFilters();
-     
-     status.innerHTML = `
-        <i class="fa-solid fa-database"></i>
-        <div>
-          <strong>Sin conexión</strong>
-          <span>Base de datos</span>
-        </div>
-      `;
-      
-      status.classList.add("off");
+    permisosLong = buildPermisosLong();
+    initFilters();
+
+    status.innerHTML = `
+      <i class="fa-solid fa-database"></i>
+      <div>
+        <strong>Sin conexión</strong>
+        <span>Base de datos</span>
+      </div>
+    `;
+
+    status.classList.add("off");
 
     renderControl();
     renderBulkList();
     renderChart();
 
-   const docHeader = document.getElementById("docHeader");
-   
-   if(docHeader){
-     docHeader.style.display = "none";
-   }
+    if(docHeader){
+      docHeader.style.display = "none";
+    }
 
   });
 }
@@ -278,17 +281,17 @@ function buildPermisosLong(){
 function searchWorker(){
 
   const dni = normalizeDni(
-    document.getElementById("dniInput").value
-  );
-
-  const worker = trabajadores.find(
-    x => normalizeDni(x.DNI) === dni
-  );
-
+     document.getElementById("dniInput").value
+   );
+   
    if(!dni){
      return;
    }
    
+   const worker = trabajadores.find(
+     x => normalizeDni(x.DNI) === dni
+   );
+      
    if(!worker){
      toast("No encontrado.");
      return;
