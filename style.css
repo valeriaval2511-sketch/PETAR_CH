@@ -257,13 +257,18 @@ h1{
 ========================= */
 
 .search-card{
-  padding:18px 24px;
+  padding:18px 22px;
 }
 
 .search-card h2,
 .search-card h3{
-  margin-top:0;
-  margin-bottom:10px;
+  margin:0 0 14px 0;
+  font-size:20px;
+  font-weight:700;
+  color:#0f5132;
+  display:flex;
+  align-items:center;
+  gap:10px;
 }
 
 .search-card p{
@@ -273,17 +278,16 @@ h1{
 .search-row{
   display:flex;
   align-items:center;
-  gap:10px;
-  margin-top:10px;
+  gap:12px;
 }
 
 .search-row input{
-  width:320px;
+  width:360px;
 }
 
 input,
 select{
-  height:42px;
+  height:46px;
   border:1px solid var(--line);
   border-radius:12px;
   padding:0 12px;
@@ -291,7 +295,7 @@ select{
 }
 
 button{
-  height:42px;
+  height:46px;
   border:none;
   border-radius:12px;
   padding:0 16px;
