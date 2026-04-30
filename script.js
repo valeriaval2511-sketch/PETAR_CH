@@ -441,39 +441,6 @@ function renderBulkList(){
   if(!cont) return;
 
   const tipo = document.getElementById("bulkDocType")?.value || "";
-
-  let html = "";
-
-  trabajadores.forEach(w => {
-
-    const existe = tipo 
-      ? existeDocumento(w.DNI, tipo)
-      : false;
-
-    html += `
-    <div class="bulk-item">
-      <input type="checkbox" value="${w.DNI}">
-      <div>
-        <b>${w.NOMBRES} ${w.APELLIDOS}</b><br>
-        DNI: ${w.DNI}<br>
-        ${w["ÁREA"]} - ${w.GUARDIA}<br>
-        <span style="color:${existe ? 'green' : 'red'}; font-weight:bold;">
-          ${tipo ? (existe ? '✔ Documento' : '✖ No existe') : ''}
-        </span>
-      </div>
-    </div>
-    `;
-  });
-
-  cont.innerHTML = html;
-}
-
-function renderBulkList(){
-
-  const cont = document.getElementById("bulkList");
-  if(!cont) return;
-
-  const tipo = document.getElementById("bulkDocType")?.value || "";
   const txt = document.getElementById("bulkDniFilter")?.value.toLowerCase() || "";
 
   // FILTRO REAL
