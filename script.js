@@ -400,6 +400,26 @@ function buscarArchivo(dni, tipo){
 
 }
 
+function buscarFoto(dni){
+
+  return archivosLocal.find(file => {
+
+    const path = file.webkitRelativePath.toUpperCase();
+    const name = file.name.toUpperCase();
+
+    return (
+      path.includes("FOTOS") &&
+      (
+        name === dni + ".JPG" ||
+        name === dni + ".PNG" ||
+        name === dni + ".JPEG"
+      )
+    );
+
+  });
+
+}
+
 function existeDocumento(dni, tipo){
 
   const nombre = dni + ".pdf";
