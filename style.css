@@ -151,15 +151,16 @@ h1{
 .folder-status{
   background:linear-gradient(135deg,#0d74c9,#0b5ca1);
   color:white;
-  width:200px;
+  width:auto;
+  min-width:170px;
 }
 
 .db-status{
   background:linear-gradient(135deg,#1f9d55,#16803f);
   color:white;
-  width:170px;
+  width:auto;
+  min-width:155px;
 }
-
 .db-status.off{
   background:linear-gradient(135deg,#b42318,#dc2626);
   color:white;
