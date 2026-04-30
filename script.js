@@ -336,50 +336,50 @@ function searchWorker(){
 
 function renderWorkerInfo(w){
 
-     workerInfo.innerHTML = `
-     
-       <div class="info-item">
-         <small>Nombre</small>
-         <strong>${get(w,COLS.nombre)}</strong>
-       </div>
-   
-       <div class="info-item">
-         <small>Guardia</small>
-         <strong>${get(w,COLS.guardia)}</strong>
-       </div>
-   
-       <div class="info-item">
-         <small>Nro Licencia</small>
-         <strong>${get(w,COLS.licencia)}</strong>
-       </div>
-   
-       <div class="info-item">
-         <small>Categoría</small>
-         <strong>${get(w,COLS.categoria)}</strong>
-       </div>
-   
-       <div class="info-item">
-         <small>Cargo</small>
-         <strong>${get(w,COLS.cargo)}</strong>
-       </div>
-   
-       <div class="info-item">
-         <small>Área</small>
-         <strong>${get(w,COLS.area)}</strong>
-       </div>
-   
-       <div class="info-item">
-         <small>Equipo</small>
-         <strong>${get(w,COLS.equipo) || "-"}</strong>
-       </div>
-   
-       <div class="info-item">
-         <small>Restricción</small>
-         <strong>${get(w,COLS.restriccion) || "-"}</strong>
-       </div>
-       
-     `;
-   }
+  workerInfo.innerHTML = `
+  
+    <div class="info-item">
+      <small>Nombre:</small>
+      <strong>${get(w,COLS.nombre)}</strong>
+    </div>
+
+    <div class="info-item">
+      <small>Guardia:</small>
+      <strong>${get(w,COLS.guardia)}</strong>
+    </div>
+
+    <div class="info-item">
+      <small>Nro Licencia:</small>
+      <strong>${get(w,COLS.licencia)}</strong>
+    </div>
+
+    <div class="info-item">
+      <small>Categoría:</small>
+      <strong>${get(w,COLS.categoria)}</strong>
+    </div>
+
+    <div class="info-item">
+      <small>Cargo:</small>
+      <strong>${get(w,COLS.cargo)}</strong>
+    </div>
+
+    <div class="info-item">
+      <small>Área:</small>
+      <strong>${get(w,COLS.area)}</strong>
+    </div>
+
+    <div class="info-item">
+      <small>Equipo:</small>
+      <strong>${get(w,COLS.equipo) || "-"}</strong>
+    </div>
+
+    <div class="info-item">
+      <small>Restricción:</small>
+      <strong>${get(w,COLS.restriccion) || "-"}</strong>
+    </div>
+    
+  `;
+}
 
 function renderWorkerPerms(worker){
 
