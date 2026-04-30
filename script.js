@@ -273,14 +273,13 @@ function searchWorker(){
   currentWorker = worker;
 
    renderWorkerInfo(worker);
-   const foto = buscarFoto(worker.DNI);
-   
+      
    const img = document.getElementById("fotoTrabajador");
-   
-   if(foto){
-     img.src = URL.createObjectURL(foto);
+
+   if(worker.FOTO_URL){
+       img.src = worker.FOTO_URL;
    }else{
-     img.src = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+       img.src = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
    }
 
    /* =========================
@@ -323,38 +322,51 @@ function searchWorker(){
 
 function renderWorkerInfo(w){
 
-  document.getElementById("workerInfo").innerHTML = `
-    <div class="info-item">
-      <small>Nombre</small>
-      <strong>${fullName(w)}</strong>
-    </div>
+     workerInfo.innerHTML = `
+     
+       <div class="info-item">
+         <small>Nombre</small>
+         <strong>${get(w,COLS.nombre)}</strong>
+       </div>
+   
+       <div class="info-item">
+         <small>Guardia</small>
+         <strong>${get(w,COLS.guardia)}</strong>
+       </div>
+   
+       <div class="info-item">
+         <small>Nro Licencia</small>
+         <strong>${get(w,COLS.licencia)}</strong>
+       </div>
+   
+       <div class="info-item">
+         <small>Categoría</small>
+         <strong>${get(w,COLS.categoria)}</strong>
+       </div>
+   
+       <div class="info-item">
+         <small>Cargo</small>
+         <strong>${get(w,COLS.cargo)}</strong>
+       </div>
+   
+       <div class="info-item">
+         <small>Área</small>
+         <strong>${get(w,COLS.area)}</strong>
+       </div>
+   
+       <div class="info-item">
+         <small>Equipo</small>
+         <strong>${get(w,COLS.equipo) || "-"}</strong>
+       </div>
+   
+       <div class="info-item">
+         <small>Restricción</small>
+         <strong>${get(w,COLS.restriccion) || "-"}</strong>
+       </div>
+       
+     `;
+   }
 
-    <div class="info-item">
-      <small>Guardia</small>
-      <strong>${w.GUARDIA || "-"}</strong>
-    </div>
-
-    <div class="info-item">
-      <small>Nro Licencia</small>
-      <strong>${w["NRO LICENCIA"] || "-"}</strong>
-    </div>
-
-    <div class="info-item">
-      <small>Categoría</small>
-      <strong>${w.CATEGORIA || "-"}</strong>
-    </div>
-
-    <div class="info-item">
-      <small>Cargo</small>
-      <strong>${get(w, COLS.cargo)}</strong>
-    </div>
-
-    <div class="info-item">
-      <small>Área</small>
-      <strong>${get(w, COLS.area)}</strong>
-    </div>
-  `;
-}
 function renderWorkerPerms(worker){
 
   const dni = worker.DNI;
@@ -438,26 +450,6 @@ function buscarArchivo(dni, tipo){
     return (
       path.includes(tipo.toUpperCase()) &&
       file.name.toUpperCase() === dni + ".PDF"
-    );
-
-  });
-
-}
-
-function buscarFoto(dni){
-
-  return archivosLocal.find(file => {
-
-    const path = file.webkitRelativePath.toUpperCase();
-    const name = file.name.toUpperCase();
-
-    return (
-      path.includes("FOTOS") &&
-      (
-        name === dni + ".JPG" ||
-        name === dni + ".PNG" ||
-        name === dni + ".JPEG"
-      )
     );
 
   });
