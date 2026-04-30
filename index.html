@@ -131,15 +131,31 @@
         <h2>Impresión / documentos</h2>
         <p>En versión web, los documentos deben estar en Google Drive. La app abrirá el PDF; la impresión se hace desde el visor del navegador.</p>
         <div class="filters">
-          <label>Buscar DNI<input id="bulkDniFilter" type="text" placeholder="Filtrar DNI" /></label>
-          <label>Documento<select id="bulkDocType"></select></label>
-          <button id="btnOpenSelected" class="primary">Abrir documentos seleccionados</button>
+          <label>Filtrar
+            <input id="bulkDniFilter" type="text" placeholder="DNI o nombre" />
+          </label>
+        
+          <label>Documento
+            <select id="bulkDocType"></select>
+          </label>
+        
+          <button id="btnSelectAll" class="secondary">
+            ✔ Seleccionar todo
+          </button>
+        
+          <button id="btnOpenSelected" class="secondary">
+            📂 Abrir seleccionados
+          </button>
+        
+          <button id="btnPrintSelected" class="primary">
+            🖨️ Imprimir seleccionados
+          </button>
         </div>
-      </div>
-      <div class="card">
-        <h3>Trabajadores</h3>
-        <div id="bulkList" class="bulk-list"></div>
-      </div>
+        </div>
+        <div class="card">
+          <h3>Trabajadores</h3>
+          <div id="bulkList" class="bulk-list"></div>
+        </div>
     </section>
   </main>
 
