@@ -280,13 +280,37 @@ function searchWorker(){
 function renderWorkerInfo(w){
 
   document.getElementById("workerInfo").innerHTML = `
-  <div class="info-item"><small>Nombre</small><strong>${fullName(w)}</strong></div>
-  <div class="info-item"><small>DNI</small><strong>${w.DNI}</strong></div>
-  <div class="info-item"><small>Cargo</small><strong>${get(w,COLS.cargo)}</strong></div>
-  <div class="info-item"><small>Área</small><strong>${get(w,COLS.area)}</strong></div>
+    <div class="info-item">
+      <small>Nombre</small>
+      <strong>${fullName(w)}</strong>
+    </div>
+
+    <div class="info-item">
+      <small>Guardia</small>
+      <strong>${w.GUARDIA || "-"}</strong>
+    </div>
+
+    <div class="info-item">
+      <small>Nro Licencia</small>
+      <strong>${w["NRO LICENCIA"] || "-"}</strong>
+    </div>
+
+    <div class="info-item">
+      <small>Categoría</small>
+      <strong>${w.CATEGORIA || "-"}</strong>
+    </div>
+
+    <div class="info-item">
+      <small>Cargo</small>
+      <strong>${get(w, COLS.cargo)}</strong>
+    </div>
+
+    <div class="info-item">
+      <small>Área</small>
+      <strong>${get(w, COLS.area)}</strong>
+    </div>
   `;
 }
-
 function renderWorkerPerms(worker){
 
   const dni = worker.DNI;
