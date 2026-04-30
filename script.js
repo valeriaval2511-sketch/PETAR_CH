@@ -181,6 +181,9 @@ function loadData(){
 
       trabajadores = json.data;
 
+      permisosLong = buildPermisosLong();
+      initFilters();
+
       status.textContent = "Conectado a Google Sheets";
       status.style.background = "#1f7a4c"; // opcional verde
 
@@ -201,6 +204,10 @@ function loadData(){
     console.error("ERROR FETCH:", err);
 
     trabajadores = DEMO_DATA;
+
+   permisosLong = buildPermisosLong();
+   initFilters();
+     
     status.textContent = "Modo local";
     status.style.background = "#a94442"; // opcional rojo
 
