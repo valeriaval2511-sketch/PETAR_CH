@@ -113,11 +113,13 @@ h1{
 
 .status-group{
   display:flex;
+  align-items:center;
   gap:10px;
 }
 
 .status-pill{
-  padding:9px 16px;
+  height:56px;
+  padding:0 18px;
   border-radius:999px;
   font-size:13px;
   font-weight:700;
@@ -125,7 +127,6 @@ h1{
   align-items:center;
   gap:10px;
   box-shadow:0 4px 10px rgba(0,0,0,.10);
-  min-height:54px;
 }
 
 .status-pill i{
@@ -143,20 +144,20 @@ h1{
   font-size:11px;
   font-weight:500;
   line-height:1.1;
-  margin-top:3px;
+  margin-top:2px;
   opacity:.95;
 }
 
 .folder-status{
   background:linear-gradient(135deg,#0d74c9,#0b5ca1);
   color:white;
-  min-width:165px;
+  width:200px;
 }
 
 .db-status{
   background:linear-gradient(135deg,#1f9d55,#16803f);
   color:white;
-  min-width:140px;
+  width:170px;
 }
 
 .db-status.off{
