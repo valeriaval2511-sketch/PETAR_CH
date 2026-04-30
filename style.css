@@ -390,10 +390,11 @@ button{
 
 .info-item small{
   display:block;
-  font-size:12px;
+  font-size:14px;
   color:#176b4d;
-  font-weight:600;
-  margin-bottom:6px;
+  font-weight:700;
+  margin-bottom:8px;
+  text-align:left;
 }
 
 .info-item strong{
