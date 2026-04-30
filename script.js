@@ -191,6 +191,7 @@ function loadData(){
       renderControl();
       renderBulkList();
       renderChart();
+      renderDashboardGlobal();
 
     } else {
 
@@ -492,6 +493,38 @@ function abrirDocumento(dni, tipo){
     win.print();
   };
 
+}
+
+function renderDashboardGlobal(){
+
+  const cont = document.getElementById("dashboardGlobal");
+  if(!cont) return;
+
+  let vigentes = 0;
+  let porVencer = 0;
+  let noVigentes = 0;
+
+  permisosLong.forEach(p => {
+
+    if(p.estado === "VIGENTE") vigentes++;
+    else if(p.estado === "POR VENCER") porVencer++;
+    else if(p.estado === "NO VIGENTE") noVigentes++;
+
+  });
+
+  cont.innerHTML = `
+    <div class="global-card ok">
+      ${vigentes}<br>VIGENTES
+    </div>
+
+    <div class="global-card warn">
+      ${porVencer}<br>POR VENCER
+    </div>
+
+    <div class="global-card bad">
+      ${noVigentes}<br>NO VIGENTES
+    </div>
+  `;
 }
 
 /* =========================
