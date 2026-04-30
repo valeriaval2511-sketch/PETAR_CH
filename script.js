@@ -8,8 +8,7 @@ const API_URL = "https://script.google.com/macros/s/AKfycbzSdWSNE4os7AhoxxSWfxOn
 const ALERTA_DIAS = 15;
 
 /* ===== NUEVO: CARPETA LOCAL ===== */
-let carpetaTrabajadores = null;
-let archivosLocales = {};
+let archivosLocal = [];
 
 /* ===== PERMISOS ===== */
 const PERMISOS = [
@@ -192,6 +191,17 @@ function loadData(){
 
     permisosLong = buildPermisosLong();
     initFilters();
+     const docSelect = document.getElementById("bulkDocType");
+   if(docSelect){
+     docSelect.innerHTML = `
+       <option value="DNI">DNI</option>
+       <option value="LICENCIA">LICENCIA</option>
+       <option value="ALTURA">ALTURA</option>
+       <option value="CALIENTE">CALIENTE</option>
+       <option value="CONFINADO">CONFINADO</option>
+       <option value="IZAJE">IZAJE</option>
+     `;
+   }
     renderControl();
     renderBulkList();
     renderChart();
@@ -304,11 +314,25 @@ function renderWorkerPerms(worker){
       <td>${fmtDate(vig)}</td>
       <td><span class="badge ${st.clase}">${st.estado}</span></td>
       <td>${st.diasTexto}</td>
-      <td>
-        <button onclick="openDocument('${dni}','${p.key}')">
-        Abrir PDF
-        </button>
-      </td>
+
+      const existe = existeDocumento(dni, p.key);
+
+      html += `
+      <tr>
+        <td>${p.label}</td>
+        <td>${fmtDate(vig)}</td>
+        <td><span class="badge ${st.clase}">${st.estado}</span></td>
+        <td>${st.diasTexto}</td>
+        <td>
+          <button onclick="abrirDocumento('${dni}','${p.key}')">
+            Abrir PDF
+          </button>
+          <span style="margin-left:8px; font-weight:bold; color:${existe ? 'green' : 'red'}">
+            ${existe ? '✔' : '✖'}
+          </span>
+        </td>
+      </tr>
+      `;
     </tr>
     `;
   }
@@ -320,61 +344,38 @@ function renderWorkerPerms(worker){
    NUEVO: CARPETA LOCAL
 ========================= */
 
-async function seleccionarCarpetaTrabajadores(){
+function buscarArchivo(dni, tipo){
 
-  try{
+  const nombre = dni + ".pdf";
 
-    carpetaTrabajadores =
-      await window.showDirectoryPicker();
-
-    archivosLocales = {};
-
-    for await (const [nombre, handle] of carpetaTrabajadores.entries()){
-
-      if(handle.kind === "directory"){
-        archivosLocales[nombre.toUpperCase()] = handle;
-      }
-    }
-
-    toast("Carpeta cargada correctamente.");
-
-  }catch(e){
-
-    toast("No se seleccionó carpeta.");
-
-  }
+  return archivosLocal.find(f => 
+    f.name === nombre && 
+    f.webkitRelativePath.toUpperCase().includes(tipo.toUpperCase())
+  );
 }
 
-async function openDocument(dni,key){
+function existeDocumento(dni, tipo){
 
-  try{
+  const nombre = dni + ".pdf";
 
-    if(!carpetaTrabajadores){
-      toast("Primero selecciona carpeta.");
-      return;
-    }
+  return archivosLocal.some(f =>
+    f.name === nombre &&
+    f.webkitRelativePath.toUpperCase().includes(tipo.toUpperCase())
+  );
+}
 
-    const sub = archivosLocales[key.toUpperCase()];
+function abrirDocumento(dni, tipo){
 
-    if(!sub){
-      toast("No existe carpeta " + key);
-      return;
-    }
+  const file = buscarArchivo(dni, tipo);
 
-    const fileHandle =
-      await sub.getFileHandle(dni + ".pdf");
-
-    const file = await fileHandle.getFile();
-
-    const url = URL.createObjectURL(file);
-
-    window.open(url,"_blank");
-
-  }catch(e){
-
-    toast("No existe PDF.");
-
+  if(!file){
+    alert("No existe documento");
+    return;
   }
+
+  const url = URL.createObjectURL(file);
+
+  window.open(url, "_blank");
 }
 
 /* =========================
@@ -447,20 +448,28 @@ function renderControl(){
 function renderBulkList(){
 
   const cont = document.getElementById("bulkList");
-
   if(!cont) return;
+
+  const tipo = document.getElementById("bulkDocType")?.value || "";
 
   let html = "";
 
   trabajadores.forEach(w => {
 
+    const existe = tipo 
+      ? existeDocumento(w.DNI, tipo)
+      : false;
+
     html += `
     <div class="bulk-item">
-      <input type="checkbox" value="${w.dni}">
+      <input type="checkbox" value="${w.DNI}">
       <div>
-        <b>${w.nombres} ${w.apellidos}</b><br>
-        DNI: ${w.dni}<br>
-        ${w.area} - ${w.guardia}
+        <b>${w.NOMBRES} ${w.APELLIDOS}</b><br>
+        DNI: ${w.DNI}<br>
+        ${w["ÁREA"]} - ${w.GUARDIA}<br>
+        <span style="color:${existe ? 'green' : 'red'}; font-weight:bold;">
+          ${tipo ? (existe ? '✔ Documento' : '✖ No existe') : ''}
+        </span>
       </div>
     </div>
     `;
@@ -579,10 +588,6 @@ function setupEvents(){
     }
   });
 
-  // Carpeta
-  document.getElementById("btnCarpeta")
-  .addEventListener("click", seleccionarCarpetaTrabajadores);
-
   // Tabs
   document.querySelectorAll(".tab").forEach(tab => {
 
@@ -605,23 +610,65 @@ function setupEvents(){
 
   });
 
-  // filtros
-   ["filterGuardia","filterArea","filterPermiso","filterEstado"]
-   .forEach(id => {
-     const el = document.getElementById(id);
-     if(el) el.addEventListener("change", updateAll);
-   });
+  // Filtros
+  ["filterGuardia","filterArea","filterPermiso","filterEstado"]
+  .forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.addEventListener("change", updateAll);
+  });
 
-  // actualizar
+  // Actualizar data
   document.getElementById("btnActualizar")
   .addEventListener("click", loadData);
 
-  // bulk
+  // Filtro DNI en lista
   document.getElementById("bulkDniFilter")
   .addEventListener("input", renderBulkList);
 
+   document.getElementById("bulkDocType")
+   .addEventListener("change", renderBulkList);
+
+  // 🔥 BOTÓN ABRIR DOCUMENTOS (CORRECTO)
   document.getElementById("btnOpenSelected")
-  .addEventListener("click", openSelectedDocs);
+  .addEventListener("click", () => {
+
+    const tipo = document.getElementById("bulkDocType").value;
+
+    if(!tipo){
+      alert("Selecciona tipo de documento");
+      return;
+    }
+
+    const checks = document.querySelectorAll("#bulkList input:checked");
+
+    if(checks.length === 0){
+      alert("Selecciona al menos un trabajador");
+      return;
+    }
+
+    checks.forEach(ch => {
+      abrirDocumento(ch.value, tipo);
+    });
+
+  });
+
+  // Botón seleccionar carpeta
+  document.getElementById("btnCarpeta")
+  .addEventListener("click", () => {
+    document.getElementById("folderInput").click();
+  });
+
+  // Leer carpeta local
+  document.getElementById("folderInput")
+  .addEventListener("change", (e) => {
+
+    archivosLocal = Array.from(e.target.files);
+
+    console.log("Archivos cargados:", archivosLocal);
+
+    document.getElementById("connectionStatus").textContent = "Carpeta cargada";
+
+  });
 
 }
 
