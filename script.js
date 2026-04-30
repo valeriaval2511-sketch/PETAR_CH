@@ -184,7 +184,14 @@ function loadData(){
       permisosLong = buildPermisosLong();
       initFilters();
 
-      status.textContent = "Conectado";
+       status.innerHTML = `
+        <i class="fa-solid fa-database"></i>
+        <div>
+          <strong>Conectado</strong>
+          <span>Base de datos</span>
+        </div>
+      `;
+      
       status.classList.remove("off");
 
       // IMPORTANTE: refrescar UI
@@ -208,8 +215,15 @@ function loadData(){
    permisosLong = buildPermisosLong();
    initFilters();
      
-   status.textContent = "Sin conexión";
-   status.classList.add("off");
+     status.innerHTML = `
+        <i class="fa-solid fa-database"></i>
+        <div>
+          <strong>Sin conexión</strong>
+          <span>Base de datos</span>
+        </div>
+      `;
+      
+      status.classList.add("off");
 
     renderControl();
     renderBulkList();
