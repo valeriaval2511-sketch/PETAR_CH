@@ -163,63 +163,52 @@ function statusFromVigencia(vig){
 function loadData(){
 
   const status = document.getElementById("connectionStatus");
-  status.textContent = "Conectando...";
 
   fetch(API_URL + "?action=list")
-  .then(res => res.json())
+  .then(res => {
+
+    if(!res.ok){
+      throw new Error("Respuesta no OK");
+    }
+
+    return res.json();
+  })
   .then(json => {
 
-    console.log("API:", json);
+    console.log("API OK:", json);
 
-    if(!json || !json.ok){
+    if(json && json.ok){
 
-      trabajadores = DEMO_DATA.map(x => ({
-        ...x,
-        DNI: normalizeDni(x.DNI)
-      }));
-
-      status.textContent = "Modo local";
-
-    }else{
-
-      trabajadores = json.data.map(x => ({
-        ...x,
-        DNI: normalizeDni(x.DNI)
-      }));
+      trabajadores = json.data;
 
       status.textContent = "Conectado a Google Sheets";
+      status.style.background = "#1f7a4c"; // opcional verde
+
+      // 🔥 IMPORTANTE: refrescar UI
+      renderControl();
+      renderBulkList();
+      renderChart();
+
+    } else {
+
+      throw new Error("JSON inválido");
+
     }
 
-    permisosLong = buildPermisosLong();
-    initFilters();
+  })
+  .catch(err => {
 
-    const docSelect = document.getElementById("bulkDocType");
-    if(docSelect){
-      docSelect.innerHTML = `
-        <option value="">Seleccionar</option>
-        <option value="DNI">DNI</option>
-        <option value="LICENCIA">LICENCIA</option>
-        <option value="ALTURA">ALTURA</option>
-        <option value="CALIENTE">CALIENTE</option>
-        <option value="CONFINADO">CONFINADO</option>
-        <option value="IZAJE">IZAJE</option>
-      `;
-    }
+    console.error("ERROR FETCH:", err);
+
+    trabajadores = DEMO_DATA;
+    status.textContent = "Modo local";
+    status.style.background = "#a94442"; // opcional rojo
 
     renderControl();
     renderBulkList();
     renderChart();
 
-  })
-  .catch(err => {
-
-    console.error("ERROR:", err);
-
-    trabajadores = DEMO_DATA;
-    status.textContent = "Modo local";
-
   });
-
 }
 
 /* =========================
