@@ -416,17 +416,34 @@ button{
 
 .kpi{
   border-radius:16px;
-  padding:20px;
+  padding:18px 24px;
   display:flex;
-  flex-direction:column;
   align-items:center;
   justify-content:center;
+  gap:14px;
   font-weight:600;
 }
 
 .kpi b{
+  font-size:36px;
+  font-weight:800;
+  margin:0;
+}
+
+.kpi-content{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+}
+
+.kpi-content span{
+  font-size:18px;
+  font-weight:600;
+}
+
+.kpi i{
   font-size:28px;
-  margin-bottom:4px;
 }
 
 .kpi.ok{
