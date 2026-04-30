@@ -4,7 +4,7 @@
 ================================= */
 
 /* CONFIGURA SI QUIERES APPS SCRIPT */
-const API_URL = "https://script.google.com/macros/s/AKfycby6ro2a367UQLghi-e30UoCiKdUKM1AqeAPvArLl3v5Q_mFo9Guh4DoTrsvdhtB20AO/exec"
+const API_URL = "https://script.google.com/macros/s/AKfycbzRB4G4Or7u48A6dFs3MIWl9pMGv6LunDtP2Xhr-vDew0qM3_rkOt1bcErNRZf1jMAO/exec"
 const ALERTA_DIAS = 15;
 
 /* ===== NUEVO: CARPETA LOCAL ===== */
