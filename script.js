@@ -561,6 +561,47 @@ function buscarArchivo(dni, tipo){
 
 }
 
+function getDocumentFolders(){
+
+  const folders = new Set();
+
+  archivosLocal.forEach(file => {
+
+    const parts = file.webkitRelativePath.split("/");
+
+    if(parts.length >= 2){
+      folders.add(parts[1]);
+    }
+
+  });
+
+  return [...folders].sort();
+}
+
+function populateDocumentFilter(){
+
+  const select = document.getElementById("bulkDocFilter");
+
+  if(!select) return;
+
+  select.innerHTML = `
+    <option value="">Todos los documentos</option>
+  `;
+
+  const folders = getDocumentFolders();
+
+  folders.forEach(folder => {
+
+    select.innerHTML += `
+      <option value="${folder}">
+        ${folder}
+      </option>
+    `;
+
+  });
+}
+
+
 function existeDocumento(dni, tipo){
 
   const nombre = dni + ".pdf";
@@ -620,6 +661,22 @@ function initFilters(){
     fP.innerHTML = '<option value="">Todos</option>' +
       permisos.map(p => `<option>${p}</option>`).join("");
   }
+
+const bulkArea = document.getElementById("bulkAreaFilter");
+const bulkGuardia = document.getElementById("bulkGuardiaFilter");
+
+if(bulkArea){
+  bulkArea.innerHTML =
+    '<option value="">Todas las áreas</option>' +
+    areas.map(a => `<option>${a}</option>`).join("");
+}
+
+if(bulkGuardia){
+  bulkGuardia.innerHTML =
+    '<option value="">Todas las guardias</option>' +
+    guardias.map(g => `<option>${g}</option>`).join("");
+}
+   
 const fE = document.getElementById("filterEstado");
 
 if(fE){
@@ -664,17 +721,35 @@ function renderBulkList(){
   const cont = document.getElementById("bulkList");
   if(!cont) return;
 
-  const tipo = document.getElementById("bulkDocType")?.value || "";
-  const txt = document.getElementById("bulkDniFilter")?.value.toLowerCase() || "";
+  const areaFilter =
+    document.getElementById("bulkAreaFilter")?.value || "";
 
-  // FILTRO REAL
+  const guardiaFilter =
+    document.getElementById("bulkGuardiaFilter")?.value || "";
+
+  const docFilter =
+    document.getElementById("bulkDocFilter")?.value || "";
+
   let lista = trabajadores.filter(w => {
 
-    const nombre = (w.NOMBRES + " " + w.APELLIDOS).toLowerCase();
-    const dni = w.DNI.toLowerCase();
-
-    if(txt && !nombre.includes(txt) && !dni.includes(txt)){
+    if(areaFilter && w["ÁREA"] !== areaFilter){
       return false;
+    }
+
+    if(guardiaFilter && w.GUARDIA !== guardiaFilter){
+      return false;
+    }
+
+    if(docFilter){
+
+      const tieneDoc = buscarArchivo(
+        w.DNI,
+        docFilter
+      );
+
+      if(!tieneDoc){
+        return false;
+      }
     }
 
     return true;
@@ -684,20 +759,33 @@ function renderBulkList(){
 
   lista.forEach(w => {
 
-    const existe = tipo ? existeDocumento(w.DNI, tipo) : false;
+    const existe = docFilter
+      ? existeDocumento(w.DNI, docFilter)
+      : false;
 
     html += `
-    <div class="bulk-item">
-      <input type="checkbox" value="${w.DNI}">
-      <div>
-        <b>${w.NOMBRES} ${w.APELLIDOS}</b><br>
-        DNI: ${w.DNI}<br>
-        ${w["ÁREA"]} - ${w.GUARDIA}<br>
-        <span style="color:${existe ? 'green' : 'red'}; font-weight:bold;">
-          ${tipo ? (existe ? '✔ Disponible' : '✖ No existe') : ''}
-        </span>
+      <div class="bulk-item">
+        <input type="checkbox" value="${w.DNI}">
+
+        <div>
+          <b>${w.NOMBRES} ${w.APELLIDOS}</b><br>
+          DNI: ${w.DNI}<br>
+          ${w["ÁREA"]} - Guardia ${w.GUARDIA}<br>
+
+          ${
+            docFilter
+            ? `
+            <span style="
+              color:${existe ? 'green' : 'red'};
+              font-weight:bold;
+            ">
+              ${existe ? '✔ Disponible' : '✖ No existe'}
+            </span>
+            `
+            : ""
+          }
+        </div>
       </div>
-    </div>
     `;
   });
 
@@ -871,17 +959,22 @@ function setupEvents(){
   .addEventListener("click", loadData);
 
   // Filtro DNI en lista
-  document.getElementById("bulkDniFilter")
-  .addEventListener("input", renderBulkList);
-
-   document.getElementById("bulkDocType")
-   .addEventListener("change", renderBulkList);
+   ["bulkAreaFilter","bulkGuardiaFilter","bulkDocFilter"]
+   .forEach(id => {
+   
+     const el = document.getElementById(id);
+   
+     if(el){
+       el.addEventListener("change", renderBulkList);
+     }
+   
+   });
 
   // BOTÓN ABRIR DOCUMENTOS (CORRECTO)
   document.getElementById("btnOpenSelected")
   .addEventListener("click", () => {
 
-    const tipo = document.getElementById("bulkDocType").value;
+   const tipo = document.getElementById("bulkDocFilter").value;
 
     if(!tipo){
       alert("Selecciona tipo de documento");
@@ -912,6 +1005,8 @@ function setupEvents(){
   .addEventListener("change", (e) => {
 
     archivosLocal = Array.from(e.target.files);
+     
+     populateDocumentFilter();
       
      cargarTiposDocumento();
 
@@ -948,7 +1043,7 @@ function setupEvents(){
    document.getElementById("btnPrintSelected")
    .addEventListener("click", () => {
    
-     const tipo = document.getElementById("bulkDocType").value;
+      const tipo = document.getElementById("bulkDocFilter").value;
    
      if(!tipo){
        alert("Selecciona tipo de documento");
