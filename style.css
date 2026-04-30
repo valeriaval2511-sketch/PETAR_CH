@@ -123,10 +123,24 @@ h1{
   font-weight:700;
   display:flex;
   align-items:center;
-  gap:8px;
+  gap:12px;
   box-shadow:0 4px 10px rgba(0,0,0,.10);
 }
 
+.status-pill i{
+  font-size:18px;
+}
+
+.status-pill strong{
+  display:block;
+  font-size:13px;
+}
+
+.status-pill span{
+  font-size:12px;
+  font-weight:500;
+  opacity:.9;
+}
 
 .folder-status{
   background:linear-gradient(135deg,#0d74c9,#0b5ca1);
