@@ -831,12 +831,13 @@ function setupEvents(){
    
    document.getElementById("folderStatus").innerHTML = `
      <i class="fa-solid fa-folder-open"></i>
-     <div>
+     <div class="status-text">
        <strong>Carpeta cargada</strong>
        <span>${nombreCarpeta}</span>
      </div>
    `;
 
+ 
   });
       // Seleccionar todo
    document.getElementById("btnSelectAll")
