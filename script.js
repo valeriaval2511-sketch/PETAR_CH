@@ -365,7 +365,13 @@ function abrirDocumento(dni, tipo){
 
   const url = URL.createObjectURL(file);
 
-  window.open(url, "_blank");
+  const win = window.open(url);
+
+  win.onload = () => {
+    win.focus();
+    win.print();
+  };
+
 }
 
 /* =========================
