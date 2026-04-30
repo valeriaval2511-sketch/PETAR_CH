@@ -380,11 +380,94 @@ async function openDocument(dni,key){
    CONTROL
 ========================= */
 
-function initFilters(){}
+function initFilters(){
 
-function renderControl(){}
+  const guardias = [...new Set(permisosLong.map(x => x.guardia))];
+  const areas = [...new Set(permisosLong.map(x => x.area))];
+  const permisos = [...new Set(permisosLong.map(x => x.permiso))];
 
-function renderBulkList(){}
+  const fG = document.getElementById("filterGuardia");
+  const fA = document.getElementById("filterArea");
+  const fP = document.getElementById("filterPermiso");
+
+  if(fG){
+    fG.innerHTML = '<option value="">Todas</option>' +
+      guardias.map(g => `<option>${g}</option>`).join("");
+  }
+
+  if(fA){
+    fA.innerHTML = '<option value="">Todas</option>' +
+      areas.map(a => `<option>${a}</option>`).join("");
+  }
+
+  if(fP){
+    fP.innerHTML = '<option value="">Todos</option>' +
+      permisos.map(p => `<option>${p}</option>`).join("");
+  }
+}
+
+function renderControl(){
+
+  const tbody = document.getElementById("controlTable");
+
+  const fG = document.getElementById("filterGuardia").value;
+  const fA = document.getElementById("filterArea").value;
+  const fP = document.getElementById("filterPermiso").value;
+  const fE = document.getElementById("filterEstado").value;
+
+  let data = permisosLong.filter(p => {
+
+    if(fG && p.guardia !== fG) return false;
+    if(fA && p.area !== fA) return false;
+    if(fP && p.permiso !== fP) return false;
+    if(fE && p.estado !== fE) return false;
+
+    return true;
+  });
+
+  let html = "";
+
+  data.forEach(p => {
+    html += `
+    <tr>
+      <td>${p.dni}</td>
+      <td>${p.nombre}</td>
+      <td>${p.guardia}</td>
+      <td>${p.area}</td>
+      <td>${p.permiso}</td>
+      <td><span class="badge ${p.clase}">${p.estado}</span></td>
+      <td>${p.diasTexto}</td>
+    </tr>
+    `;
+  });
+
+  tbody.innerHTML = html;
+}
+
+function renderBulkList(){
+
+  const cont = document.getElementById("bulkList");
+
+  if(!cont) return;
+
+  let html = "";
+
+  trabajadores.forEach(w => {
+
+    html += `
+    <div class="bulk-item">
+      <input type="checkbox" value="${w.dni}">
+      <div>
+        <b>${w.nombres} ${w.apellidos}</b><br>
+        DNI: ${w.dni}<br>
+        ${w.area} - ${w.guardia}
+      </div>
+    </div>
+    `;
+  });
+
+  cont.innerHTML = html;
+}
 
 /* =========================
    EVENTOS
