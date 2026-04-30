@@ -354,6 +354,38 @@ tr:hover td{
 }
 
 /* =========================
+   DASHBOARD GLOBAL
+========================= */
+
+.dashboard-global{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-bottom:16px;
+}
+
+.global-card{
+  padding:16px;
+  border-radius:14px;
+  text-align:center;
+  font-weight:700;
+  color:white;
+  box-shadow:0 6px 15px rgba(0,0,0,0.08);
+}
+
+.global-card.ok{
+  background:#16a34a;
+}
+
+.global-card.warn{
+  background:#f59e0b;
+}
+
+.global-card.bad{
+  background:#ef4444;
+}
+
+/* =========================
    RESPONSIVE
 ========================= */
 @media(max-width:850px){
