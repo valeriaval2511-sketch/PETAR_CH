@@ -442,12 +442,38 @@ function renderWorkerSummary(worker){
     if(st.estado === "VIGENTE") vigentes++;
     else if(st.estado === "POR VENCER") porVencer++;
     else if(st.estado === "NO VIGENTE") noVigentes++;
+
   });
 
   cont.innerHTML = `
-    <div class="kpi ok"><b>${vigentes}</b>Vigentes</div>
-    <div class="kpi warn"><b>${porVencer}</b>Por vencer</div>
-    <div class="kpi bad"><b>${noVigentes}</b>No vigentes</div>
+  
+    <div class="kpi ok">
+      <i class="fa-regular fa-circle-check"></i>
+
+      <div class="kpi-content">
+        <span>Vigentes</span>
+        <b>${vigentes}</b>
+      </div>
+    </div>
+
+    <div class="kpi warn">
+      <i class="fa-regular fa-clock"></i>
+
+      <div class="kpi-content">
+        <span>Por vencer</span>
+        <b>${porVencer}</b>
+      </div>
+    </div>
+
+    <div class="kpi bad">
+      <i class="fa-regular fa-circle-xmark"></i>
+
+      <div class="kpi-content">
+        <span>No vigentes</span>
+        <b>${noVigentes}</b>
+      </div>
+    </div>
+
   `;
 }
 
