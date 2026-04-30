@@ -184,14 +184,13 @@ function loadData(){
       permisosLong = buildPermisosLong();
       initFilters();
 
-      status.textContent = "Conectado a Google Sheets";
-      status.style.background = "#1f7a4c"; // opcional verde
+      status.textContent = "Conectado";
+      status.classList.remove("off");
 
       // IMPORTANTE: refrescar UI
       renderControl();
       renderBulkList();
       renderChart();
-      renderDashboardGlobal();
 
     } else {
 
@@ -209,8 +208,8 @@ function loadData(){
    permisosLong = buildPermisosLong();
    initFilters();
      
-    status.textContent = "Modo local";
-    status.style.background = "#a94442"; // opcional rojo
+   status.textContent = "Sin conexión";
+   status.classList.add("off");
 
     renderControl();
     renderBulkList();
@@ -495,37 +494,6 @@ function abrirDocumento(dni, tipo){
 
 }
 
-function renderDashboardGlobal(){
-
-  const cont = document.getElementById("dashboardGlobal");
-  if(!cont) return;
-
-  let vigentes = 0;
-  let porVencer = 0;
-  let noVigentes = 0;
-
-  permisosLong.forEach(p => {
-
-    if(p.estado === "VIGENTE") vigentes++;
-    else if(p.estado === "POR VENCER") porVencer++;
-    else if(p.estado === "NO VIGENTE") noVigentes++;
-
-  });
-
-  cont.innerHTML = `
-    <div class="global-card ok">
-      ${vigentes}<br>VIGENTES
-    </div>
-
-    <div class="global-card warn">
-      ${porVencer}<br>POR VENCER
-    </div>
-
-    <div class="global-card bad">
-      ${noVigentes}<br>NO VIGENTES
-    </div>
-  `;
-}
 
 /* =========================
    CONTROL
@@ -852,7 +820,11 @@ function setupEvents(){
 
     console.log("Archivos cargados:", archivosLocal);
 
-    document.getElementById("connectionStatus").textContent = "Carpeta cargada";
+    const nombreCarpeta =
+     archivosLocal[0]?.webkitRelativePath.split("/")[0] || "";
+   
+   document.getElementById("folderStatus").textContent =
+     "Carpeta: " + nombreCarpeta;
 
   });
       // Seleccionar todo
