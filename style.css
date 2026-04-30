@@ -371,3 +371,28 @@ tr:hover td{
   }
 
 }
+
+/* =========================
+   WORKER CARD PRO
+========================= */
+
+.worker-card{
+  display:flex;
+  gap:20px;
+  align-items:center;
+}
+
+/* foto */
+.worker-left img{
+  width:110px;
+  height:110px;
+  object-fit:cover;
+  border-radius:16px;
+  border:2px solid #e5e7eb;
+  background:#f3f4f6;
+}
+
+/* info */
+.worker-right{
+  flex:1;
+}
