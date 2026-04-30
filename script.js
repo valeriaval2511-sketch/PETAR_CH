@@ -445,36 +445,48 @@ function renderWorkerSummary(worker){
 
   });
 
-  cont.innerHTML = `
-  
-    <div class="kpi ok">
-      <i class="fa-regular fa-circle-check"></i>
+cont.innerHTML = `
 
-      <div class="kpi-content">
-        <span>Vigentes</span>
+  <div class="kpi ok">
+
+    <div class="kpi-content">
+      <span>Vigentes</span>
+
+      <div class="kpi-number-row">
+        <i class="fa-regular fa-circle-check"></i>
         <b>${vigentes}</b>
       </div>
     </div>
 
-    <div class="kpi warn">
-      <i class="fa-regular fa-clock"></i>
+  </div>
 
-      <div class="kpi-content">
-        <span>Por vencer</span>
+  <div class="kpi warn">
+
+    <div class="kpi-content">
+      <span>Por vencer</span>
+
+      <div class="kpi-number-row">
+        <i class="fa-regular fa-clock"></i>
         <b>${porVencer}</b>
       </div>
     </div>
 
-    <div class="kpi bad">
-      <i class="fa-regular fa-circle-xmark"></i>
+  </div>
 
-      <div class="kpi-content">
-        <span>No vigentes</span>
+  <div class="kpi bad">
+
+    <div class="kpi-content">
+      <span>No vigentes</span>
+
+      <div class="kpi-number-row">
+        <i class="fa-regular fa-circle-xmark"></i>
         <b>${noVigentes}</b>
       </div>
     </div>
 
-  `;
+  </div>
+
+`;
 }
 
 /* =========================
