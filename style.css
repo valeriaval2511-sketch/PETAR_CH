@@ -553,3 +553,13 @@ tr:hover td{
 .worker-left img.bad{
   border:3px solid #ef4444;
 }
+
+/* ahora el card ocupa todo */
+.worker-card{
+  width:100%;
+}
+
+/* mejor alineación */
+.worker-right h3{
+  margin-bottom:10px;
+}
