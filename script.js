@@ -4,7 +4,7 @@
 ================================= */
 
 /* CONFIGURA SI QUIERES APPS SCRIPT */
-const API_URL = "https://script.google.com/macros/s/AKfycbzJOdUB1n_TPMTF2TaYzrwrbwHNwZ7Kg21wG8Q5DdMHfc2pQ7YhJVzkTGiPeJB_Hehk/exec"
+const API_URL = "https://script.google.com/macros/s/AKfycbw9j17hKxyJrcpfN3JWTUhJ0mNvhqL841XKC9G6cu4-lvGG8Jkpr35joaxzKjLQeCJH/exec"
 const ALERTA_DIAS = 15;
 
 /* ===== NUEVO: CARPETA LOCAL ===== */
@@ -282,6 +282,41 @@ function searchWorker(){
    }else{
      img.src = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
    }
+
+   /* =========================
+         🔥 ESTADO GLOBAL (AQUÍ VA)
+      ========================= */
+      
+      let tieneBad = false;
+      let tieneWarn = false;
+      
+      PERMISOS.forEach(p => {
+      
+        if(!p.vigenciaCol) return;
+      
+        const vig = parseDate(worker[p.vigenciaCol]);
+        const st = statusFromVigencia(vig);
+      
+        if(st.estado === "NO VIGENTE") tieneBad = true;
+        else if(st.estado === "POR VENCER") tieneWarn = true;
+      
+      });
+      
+      /* limpiar clases */
+      img.classList.remove("ok","warn","bad");
+      
+      /* aplicar prioridad */
+      if(tieneBad){
+        img.classList.add("bad");
+      }else if(tieneWarn){
+        img.classList.add("warn");
+      }else{
+        img.classList.add("ok");
+      }
+      
+      /* =========================
+         FIN BLOQUE
+      ========================= */
    renderWorkerPerms(worker);
    renderWorkerSummary(worker);
 }
