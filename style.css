@@ -93,14 +93,14 @@ h1{
 .header-right{
   display:flex;
   align-items:center;
-  gap:16px;
+  gap:10px;
 }
 
 .btn-folder{
   background:white;
   color:#176b4d;
   border:none;
-  padding:12px 22px;
+  padding:10px 18px;
   border-radius:16px;
   font-weight:700;
   cursor:pointer;
@@ -150,13 +150,13 @@ h1{
 .folder-status{
   background:linear-gradient(135deg,#0d74c9,#0b5ca1);
   color:white;
-  min-width:190px;
+  min-width:165px;
 }
 
 .db-status{
   background:linear-gradient(135deg,#1f9d55,#16803f);
   color:white;
-  min-width:155px;
+  min-width:140px;
 }
 
 .db-status.off{
