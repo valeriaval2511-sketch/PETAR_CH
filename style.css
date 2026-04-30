@@ -405,8 +405,9 @@ button{
 .info-item strong{
   display:block;
   font-size:15px;
-  font-weight:700;
+  font-weight:400;
   text-align:center;
+  color:#17231f;
 }
 
 /* =========================
