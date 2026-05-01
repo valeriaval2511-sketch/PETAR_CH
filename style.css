@@ -623,49 +623,77 @@ tr:hover td{
 ========================= */
 @media(max-width:900px){
 
+  /* CONTENEDOR */
+  .container{
+    padding:12px;
+  }
+
   /* HEADER */
   .app-header{
     flex-direction:column;
-    align-items:flex-start;
-    gap:15px;
-    padding:16px;
+    align-items:stretch;
+    gap:12px;
+    padding:14px;
   }
 
+  .brand{
+    width:100%;
+  }
+
+  .brand h1{
+    font-size:20px;
+  }
+
+  .brand p{
+    font-size:13px;
+  }
+
+  /* STATUS */
   .header-right{
     width:100%;
-    flex-direction:column;
-    align-items:stretch;
-  }
-
-  .status-group{
-    width:100%;
-    flex-direction:column;
+    flex-direction:row;
+    flex-wrap:wrap;
+    gap:10px;
   }
 
   .status-pill{
-    width:100%;
+    flex:1;
+    min-width:140px;
+    padding:10px;
+  }
+
+  .status-pill strong{
+    font-size:13px;
+  }
+
+  .status-pill span{
+    font-size:11px;
   }
 
   /* TABS */
   .tabs{
-    gap:15px;
     overflow-x:auto;
     white-space:nowrap;
-    padding:0 8px;
+    gap:20px;
+    padding-bottom:8px;
   }
 
   .tab{
-    font-size:13px;
     flex-shrink:0;
+    font-size:13px;
   }
 
   /* SEARCH */
   .search-row{
     flex-direction:column;
-    align-items:stretch;
+    gap:10px;
   }
 
   .search-row input{
+    width:100%;
+  }
+
+  .search-row button{
     width:100%;
   }
 
@@ -681,6 +709,11 @@ tr:hover td{
     justify-content:center;
   }
 
+  .worker-photo{
+    width:160px;
+    height:220px;
+  }
+
   .worker-right{
     width:100%;
   }
@@ -690,17 +723,49 @@ tr:hover td{
     grid-template-columns:1fr;
   }
 
+  .info-item{
+    text-align:left;
+    padding:14px;
+  }
+
+  .info-item strong{
+    text-align:left;
+    display:block;
+  }
+
   /* KPI */
   .summary{
-    grid-template-columns:repeat(2,1fr);
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+
+  .kpi{
+    min-height:auto;
+    padding:14px;
+  }
+
+  /* TABLA */
+  .table-wrap{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  table{
+    min-width:700px;
   }
 
   /* FILTROS IMPRESIÓN */
   .filters{
     flex-direction:column;
+    gap:10px;
   }
 
-  .filter-group{
+  .filters label{
+    width:100%;
+  }
+
+  .filters input,
+  .filters select{
     width:100%;
   }
 
@@ -708,18 +773,19 @@ tr:hover td{
   .bulk-actions{
     flex-direction:column;
     align-items:stretch;
+    gap:10px;
   }
 
   .bulk-buttons{
-    width:100%;
     flex-direction:column;
+    width:100%;
   }
 
   .bulk-buttons button{
     width:100%;
   }
 
-  /* LISTA TRABAJADORES */
+  /* TRABAJADORES */
   .bulk-list{
     grid-template-columns:1fr;
   }
