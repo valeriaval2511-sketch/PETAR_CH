@@ -201,7 +201,7 @@ h1{
   border-radius:0;
   padding:16px 0;
 
-  font-family:'Century Gothic', sans-serif;
+  font-family:Arial, sans-serif;
   font-size:14px;
   font-weight:600;
 
@@ -593,15 +593,22 @@ tr:hover td{
   font-family:'Roboto', sans-serif;
 }
 
-.bulk-item:hover{
-  border-color:#0b5d3b;
-  box-shadow:0 4px 10px rgba(0,0,0,0.05);
+.bulk-item > div{
+  font-family:'Roboto', sans-serif;
+  font-size:12px;
+  line-height:1.7;
+  color:#4b5563;
+  font-weight:400;
 }
 
-.bulk-item.selected{
-  border-color:#0b5d3b;
-  background:#eef7f3;
+.bulk-item b{
+  color:var(--green);
+  font-weight:400;
+  font-size:14px;
+  display:block;
+  margin-bottom:4px;
 }
+
 
 .bulk-item:hover{
   border-color:#0b5d3b;
