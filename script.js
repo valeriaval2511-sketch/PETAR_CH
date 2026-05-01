@@ -120,7 +120,7 @@ function statusFromVigencia(vig){
   if(!vig){
     return {
       estado: "SIN INFORMACIÓN",
-      dias: null,
+      dias: "-",
       color: "gray"
     };
   }
@@ -136,7 +136,6 @@ function statusFromVigencia(vig){
       (fecha - hoy) / (1000 * 60 * 60 * 24)
     );
 
-  // vencido
   if(diff < 0){
     return {
       estado: "NO VIGENTE",
@@ -145,7 +144,6 @@ function statusFromVigencia(vig){
     };
   }
 
-  // vence en 15 días
   if(diff <= 15){
     return {
       estado: "POR VENCER (15 DÍAS)",
@@ -154,7 +152,6 @@ function statusFromVigencia(vig){
     };
   }
 
-  // vence en 30 días
   if(diff <= 30){
     return {
       estado: "POR VENCER (30 DÍAS)",
@@ -163,14 +160,12 @@ function statusFromVigencia(vig){
     };
   }
 
-  // vigente normal
   return {
     estado: "VIGENTE",
     dias: diff,
     color: "green"
   };
 }
-
 /* =========================
    CARGA DATA
 ========================= */
@@ -426,9 +421,10 @@ function renderWorkerPerms(worker){
 
   let html = "";
 
-  // Mostrar u ocultar columna documento
+  // mostrar/ocultar columna documento
   if(docHeader){
-    docHeader.style.display = archivosLocal.length ? "" : "none";
+    docHeader.style.display =
+      archivosLocal.length ? "" : "none";
   }
 
   for(const p of PERMISOS){
@@ -445,11 +441,45 @@ function renderWorkerPerms(worker){
       ? statusFromVigencia(vig)
       : {
           estado:"—",
-          clase:"unknown",
-          diasTexto:"—"
+          color:"gray",
+          dias:"-"
         };
 
     const existe = existeDocumento(dni,p.key);
+
+    let badgeClass = "unknown";
+
+    if(st.color === "green"){
+      badgeClass = "ok";
+    }
+
+    else if(st.color === "yellow"){
+      badgeClass = "yellow";
+    }
+
+    else if(st.color === "orange"){
+      badgeClass = "orange";
+    }
+
+    else if(st.color === "red"){
+      badgeClass = "bad";
+    }
+
+    let diasTexto = "-";
+
+    if(typeof st.dias === "number"){
+
+      if(st.dias < 0){
+        diasTexto =
+          `Vencido hace ${Math.abs(st.dias)} día(s)`;
+      }
+
+      else{
+        diasTexto =
+          `Faltan ${st.dias} día(s)`;
+      }
+
+    }
 
     html += `
       <tr>
@@ -458,12 +488,12 @@ function renderWorkerPerms(worker){
         <td>${fmtDate(vig)}</td>
 
         <td>
-          <span class="badge ${st.clase}">
+          <span class="badge ${badgeClass}">
             ${st.estado}
           </span>
         </td>
 
-        <td>${st.diasTexto}</td>
+        <td>${diasTexto}</td>
 
         ${
           archivosLocal.length
