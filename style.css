@@ -634,3 +634,32 @@ tr:hover td{
   gap:12px;
   flex-wrap:wrap;
 }
+
+.bulk-pagination{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  margin-top:20px;
+  flex-wrap:wrap;
+}
+
+.bulk-pagination button{
+  width:35px;
+  height:35px;
+  border:none;
+  border-radius:8px;
+  background:#f3f4f6;
+  cursor:pointer;
+}
+
+.bulk-pagination button.active-page{
+  background:#0b5d3b;
+  color:white;
+}
+
+.bulk-pagination select{
+  height:35px;
+  border-radius:8px;
+  padding:0 10px;
+}
