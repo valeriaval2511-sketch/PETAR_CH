@@ -835,14 +835,23 @@ function renderBulkList(){
   paginated.forEach(w => {
 
     html += `
-      <div class="bulk-item">
-        <input type="checkbox" value="${w.DNI}">
+      <div 
+        class="bulk-item"
+        onclick="toggleWorker('${w.DNI}', this)"
+      >
 
-        <div>
+        <input 
+          type="checkbox"
+          value="${w.DNI}"
+          onclick="event.stopPropagation()"
+        >
+
+        <div class="bulk-info">
           <b>${w.NOMBRES} ${w.APELLIDOS}</b><br>
           DNI: ${w.DNI}<br>
           ${w["ÁREA"]} - ${w.GUARDIA}
         </div>
+
       </div>
     `;
   });
@@ -857,6 +866,20 @@ function renderBulkList(){
   updateSelectedCounter();
 
   renderBulkPagination(totalPages);
+}
+
+function toggleWorker(dni, el){
+
+  const checkbox = el.querySelector("input");
+
+  checkbox.checked = !checkbox.checked;
+
+  el.classList.toggle(
+    "selected",
+    checkbox.checked
+  );
+
+  updateSelectedCounter();
 }
 
 function renderBulkPagination(totalPages){
