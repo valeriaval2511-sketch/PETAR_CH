@@ -623,25 +623,105 @@ tr:hover td{
 ========================= */
 @media(max-width:900px){
 
-  .worker-card{
+  /* HEADER */
+  .app-header{
     flex-direction:column;
     align-items:flex-start;
+    gap:15px;
+    padding:16px;
   }
 
+  .header-right{
+    width:100%;
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .status-group{
+    width:100%;
+    flex-direction:column;
+  }
+
+  .status-pill{
+    width:100%;
+  }
+
+  /* TABS */
+  .tabs{
+    gap:15px;
+    overflow-x:auto;
+    white-space:nowrap;
+    padding:0 8px;
+  }
+
+  .tab{
+    font-size:13px;
+    flex-shrink:0;
+  }
+
+  /* SEARCH */
+  .search-row{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .search-row input{
+    width:100%;
+  }
+
+  /* WORKER CARD */
+  .worker-card{
+    flex-direction:column;
+    align-items:center;
+  }
+
+  .worker-left{
+    width:100%;
+    display:flex;
+    justify-content:center;
+  }
+
+  .worker-right{
+    width:100%;
+  }
+
+  /* INFO GRID */
   .info-grid{
     grid-template-columns:1fr;
   }
 
+  /* KPI */
   .summary{
-    grid-template-columns:1fr;
+    grid-template-columns:repeat(2,1fr);
   }
 
-  .header-right{
-    flex-wrap:wrap;
-  }
-
-  .search-row{
+  /* FILTROS IMPRESIÓN */
+  .filters{
     flex-direction:column;
+  }
+
+  .filter-group{
+    width:100%;
+  }
+
+  /* BOTONES */
+  .bulk-actions{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .bulk-buttons{
+    width:100%;
+    flex-direction:column;
+  }
+
+  .bulk-buttons button{
+    width:100%;
+  }
+
+  /* LISTA TRABAJADORES */
+  .bulk-list{
+    grid-template-columns:1fr;
   }
 }
 
