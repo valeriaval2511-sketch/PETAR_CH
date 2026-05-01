@@ -116,45 +116,58 @@ function daysBetween(a,b){
 }
 
 function statusFromVigencia(vig){
-  if(!vig) return {
-    estado:"Sin información",
-    diasTexto:"—",
-    clase:"unknown"
-  };
+
+  if(!vig){
+    return {
+      estado: "SIN INFORMACIÓN",
+      dias: null,
+      color: "gray"
+    };
+  }
 
   const hoy = new Date();
-  const h = new Date(hoy.getFullYear(),hoy.getMonth(),hoy.getDate());
+  hoy.setHours(0,0,0,0);
 
-  const delta = daysBetween(vig,h);
+  const fecha = new Date(vig);
+  fecha.setHours(0,0,0,0);
 
-  if(delta < 0){
+  const diff =
+    Math.ceil(
+      (fecha - hoy) / (1000 * 60 * 60 * 24)
+    );
+
+  // vencido
+  if(diff < 0){
     return {
-      estado:"NO VIGENTE",
-      diasTexto:`Venció hace ${Math.abs(delta)} día(s)`,
-      clase:"bad"
+      estado: "NO VIGENTE",
+      dias: diff,
+      color: "red"
     };
   }
 
-  if(delta === 0){
+  // vence en 15 días
+  if(diff <= 15){
     return {
-      estado:"POR VENCER",
-      diasTexto:"VENCE HOY",
-      clase:"warn"
+      estado: "POR VENCER (15 DÍAS)",
+      dias: diff,
+      color: "orange"
     };
   }
 
-  if(delta <= ALERTA_DIAS){
+  // vence en 30 días
+  if(diff <= 30){
     return {
-      estado:"POR VENCER",
-      diasTexto:`Faltan ${delta} día(s)`,
-      clase:"warn"
+      estado: "POR VENCER (30 DÍAS)",
+      dias: diff,
+      color: "yellow"
     };
   }
 
+  // vigente normal
   return {
-    estado:"VIGENTE",
-    diasTexto:`Faltan ${delta} día(s)`,
-    clase:"ok"
+    estado: "VIGENTE",
+    dias: diff,
+    color: "green"
   };
 }
 
@@ -485,7 +498,8 @@ function renderWorkerSummary(worker){
   if(!cont) return;
 
   let vigentes = 0;
-  let porVencer = 0;
+  let porVencer30 = 0;
+  let porVencer15 = 0;
   let noVigentes = 0;
 
   PERMISOS.forEach(p => {
@@ -498,9 +512,15 @@ function renderWorkerSummary(worker){
     if(st.estado === "VIGENTE"){
       vigentes++;
     }
-    else if(st.estado === "POR VENCER"){
-      porVencer++;
+
+    else if(st.estado === "POR VENCER (30 DÍAS)"){
+      porVencer30++;
     }
+
+    else if(st.estado === "POR VENCER (15 DÍAS)"){
+      porVencer15++;
+    }
+
     else if(st.estado === "NO VIGENTE"){
       noVigentes++;
     }
@@ -520,13 +540,24 @@ function renderWorkerSummary(worker){
       </div>
     </div>
 
-    <div class="kpi warn">
+    <div class="kpi yellow">
       <div class="kpi-content">
-        <span>Por vencer</span>
+        <span>Vence 30 días</span>
 
         <div class="kpi-number-row">
           <i class="fa-regular fa-clock"></i>
-          <b>${porVencer}</b>
+          <b>${porVencer30}</b>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpi orange">
+      <div class="kpi-content">
+        <span>Vence 15 días</span>
+
+        <div class="kpi-number-row">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <b>${porVencer15}</b>
         </div>
       </div>
     </div>
